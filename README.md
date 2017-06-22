@@ -89,7 +89,7 @@ Setup following resources in the MQ series queue manager
 			transportType="CLIENT" />
 	</jmsActivationSpec>`
 
-The jmsActivationSpec ID must match the xxxx this, will be output in the Liberty messages.log in the following CNTR0180I message:
+The jmsActivationSpec ID must match the xxxx this, will be output in the Liberty messages.log in the following CNTR0180I message:  
 `[6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification`    
 
 The `hostName`, `port`, `queueManager` properties in each of these elements should be set based on your local MQ configuration. The `transportType` property must be set to `CLIENT`
@@ -106,16 +106,18 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 ## Running the tests
 
 
-1. The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example:
-[http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)
+* The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example:
+[http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)  
+
 If the test is successful, you will see the following response written to the browser:
 `22/06/2017 16:11:20 3 records have been written to queue:///DEMO.SIMPLEQ`
 
-1. To read the records back specify the readQ parameter:
+* To read the records back specify the readQ parameter:
 [http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readQ)
 
-3. To write records to the MDB queue specify the putmdbQ parameter:
-[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbQ)
+* To write records to the MDB queue specify the putmdbQ parameter:
+[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbQ)  
+
 To verify that the MDB has been triggered, you can browse the contents of the TSQ RJMSTSQ as the MDB will write the messages from the MDBQUEUE to this CICS TSQ. 
 
 ## Reference
