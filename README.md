@@ -55,37 +55,46 @@ Setup following resources in the MQ series queue manager
 `<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>`
 
 1. Ensure the following Liberty features are present in server.xml 
-`<feature>cicsts:core-1.0</feature>       
+ ```xml
+<feature>cicsts:core-1.0</feature>       
 <feature>jsp-2.3</feature>   
 <feature>jms-2.0</feature>		
 <feature>wmqJmsClient-2.0</feature>
-<feature>jmsMdb-3.2</feature>`
+<feature>jmsMdb-3.2</feature>
+```
 
 1. Add a JMS connection factory definition to the server.xml as follows:
-`<jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
+ ```xml
+<jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
         <properties.wmqJms channel="WAS.JMS.SVRCONN" 
                            hostName="localhost" 
                            port="1420" queueManager="QM2C" 
                            transportType="CLIENT"/>
     </jmsQueueConnectionFactory>
-    <connectionManager id="ConMgr" maxPoolSize="10"/>  `
+    <connectionManager id="ConMgr" maxPoolSize="10"/>  
+```
+
   
 1. Add a definition for the queues required by the test as follows:
-`<jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
+```xml
+<jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
 		<properties.wmqJms baseQueueName="DEMO.SIMPLEQ" />
-</jmsQueue>`
-`<jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
+</jmsQueue>
+<jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
 		<properties.wmqJms baseQueueName="DEMO.MDBQUEUE" />
-</jmsQueue>  `
+</jmsQueue>  
+```
 
 1. Add a JMS activation spec to the server.xml to define our MDB that will be invoked from the MDB queue. 
         
-	`<jmsActivationSpec id="mySimpleJMSEAR/mySimpleJMSMDB/MySimpleMDB">
+```xml
+	<jmsActivationSpec id="mySimpleJMSEAR/mySimpleJMSMDB/MySimpleMDB">
 		<properties.wmqJms channel="WAS.JMS.SVRCONN"
 			destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
 			port="1420" queueManager="QM2C"
 			transportType="CLIENT" />
-	</jmsActivationSpec>`
+	</jmsActivationSpec>
+```
 
 The jmsActivationSpec ID must match the xxxx this, will be output in the Liberty messages.log in the following CNTR0180I message:  
 `[6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification`    
