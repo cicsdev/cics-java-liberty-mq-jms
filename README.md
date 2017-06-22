@@ -45,9 +45,8 @@ The sample code can be deployed as an EAR file into a CICS Liberty JVM server. T
 Setup following resources in the MQ series queue manager
 
  1. MQ channel - WAS.JMS.SVRCONN
- 2. MQ queues -
- DEMO.SIMPLEQ 
- DEMO.MDBQUEUE - This must be defined as shareable
+ 1. MQ queue - DEMO.SIMPLEQ 
+ 1. MQ queue - DEMO.MDBQUEUE - This must be defined as shareable
 
 ### To configure CICS
 1. Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
@@ -75,7 +74,6 @@ Setup following resources in the MQ series queue manager
 `<jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
 		<properties.wmqJms baseQueueName="DEMO.SIMPLEQ" />
 </jmsQueue>`
-
 `<jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
 		<properties.wmqJms baseQueueName="DEMO.MDBQUEUE" />
 </jmsQueue>  `
