@@ -62,7 +62,6 @@ Setup following resources in the MQ series queue manager
 <feature>wmqJmsClient-2.0</feature>
 <feature>jmsMdb-3.2</feature>
 ```
-
 1. Add a JMS connection factory definition to the server.xml as follows:
  ```xml
 <jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
