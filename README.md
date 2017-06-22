@@ -104,7 +104,9 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 1. Define and install a CICS `BUNDLE` resource definition referring to the deployed bundle directory on zFS in step 2, and ensure all resources are enabled. 
 
 ## Running the tests
-1. To invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter for example:
+
+
+1. The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example:
 [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)
 If the test is successful, you will see the following response written to the browser:
 `22/06/2017 16:11:20 3 records have been written to queue:///DEMO.SIMPLEQ`
