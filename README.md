@@ -54,10 +54,10 @@ Setup following resources in the MQ series queue manager
 1. Download and install the MQ V9 RAR. This is available at [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) and then define the RAR in the Liberty server.xml configuration file as follows:
 `<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>`
 
-1. Ensure the following Liberty features are present in server.xml 
+1. Ensure the following Liberty features are present in server.xml
  ```xml
-<feature>cicsts:core-1.0</feature>       
-<feature>jsp-2.3</feature>   
+<feature>cicsts:core-1.0</feature>
+<feature>jsp-2.3</feature>
 <feature>jms-2.0</feature>		
 <feature>wmqJmsClient-2.0</feature>
 <feature>jmsMdb-3.2</feature>
@@ -116,7 +116,7 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 * The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example:
 [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)  
 
-If the test is successful, you will see the following response written to the browser:
+If the test is successful, you will see the following response written to the browser:  
 `22/06/2017 16:11:20 3 records have been written to queue:///DEMO.SIMPLEQ`
 
 * To read the records back specify the readQ parameter:
