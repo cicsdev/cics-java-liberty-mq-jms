@@ -1,3 +1,13 @@
+/* Licensed Materials - Property of IBM                                   */
+/*                                                                        */
+/* SAMPLE                                                                 */
+/*                                                                        */
+/* (c) Copyright IBM Corp. 2016 All Rights Reserved                       */
+/*                                                                        */
+/* US Government Users Restricted Rights - Use, duplication or disclosure */
+/* restricted by GSA ADP Schedule Contract with IBM Corp                  */
+/*                                                                        */
+
 package com.ibm.cicsdev.mqjms.web;
 
 import java.io.IOException;
