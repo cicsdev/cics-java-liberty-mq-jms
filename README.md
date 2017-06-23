@@ -4,9 +4,9 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 
 ## Samples overview
 
-* `com.ibm.cicsdev.mqjms.ear` - Enterprise application archive referring to the Web and EJB projects
-* `com.ibm.cicsdev.mqjms.web` - Dynamic web project containing the servlet that uses JMS to get and put messages to the queues
-* `com.ibm.cicsdev.mqjms.web` - Dynamic web project containing the MQJMSDemo servlet that uses JMS to get and put messages
+* `com.ibm.cicsdev.mqjms.ear` - EAR project referring to the Web and EJB projects
+* `com.ibm.cicsdev.mqjms.web` - Dynamic web project containing the MQJMSDemo servlet that uses JMS to get and put messages to the queues
+* `com.ibm.cicsdev.mqjms.mdb` - EJB project containing the MQSimpleMDB that recives a message put to the MDB queue
 * `com.ibm.cicsdev.mqjms.cicsbundle` - CICS bundle project that references the EAR bundle part for deployment in a CICS bundle
 
 
