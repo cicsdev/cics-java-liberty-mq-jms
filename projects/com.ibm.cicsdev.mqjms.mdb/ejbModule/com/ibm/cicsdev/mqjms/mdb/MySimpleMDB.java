@@ -44,44 +44,44 @@ public class MySimpleMDB implements MessageListener {
 	 * The CICS TSQ that will be written to	
 	 */
 	private static final String TSQNAME = "RJMSTSQ";
-	
-    /**
-     * Default constructor
-     */
-    public MySimpleMDB() {
-    }
-	
 
-    /**
-     * The onMessage() method is invoked by the EJB container when the queue receives a msg
-     * Set TransactionAttributeType.REQUIRED to make container managed JTA transaction to control CICS UOW
-     *      
-     * @param message - The incoming message
-     */ 
+	/**
+	 * Default constructor
+	 */
+	public MySimpleMDB() {
+	}
+
+
+	/**
+	 * The onMessage() method is invoked by the EJB container when the queue receives a msg
+	 * Set TransactionAttributeType.REQUIRED to make container managed JTA transaction to control CICS UOW
+	 *      
+	 * @param message - The incoming message
+	 */ 
 	@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
-    public void onMessage(Message  message) {    	
-	
-    	try { 
-    		
-    		// First determine we have been driven from an MDB queue
-    		Destination jmsDestination = message.getJMSDestination();
-    		if (jmsDestination instanceof Queue) {
-    			String q = ((Queue) jmsDestination).getQueueName();
-    			System.out.println(formatTime() + " Task:" + Task.getTask().getTaskNumber() + " Message received from MDB queue " + q ) ;
-            } else {
-            	System.out.println(formatTime() + " ERROR:" + Task.getTask().getTaskNumber() + " Message received from invalid queue") ;
-            }
-            
- 			// Cast input message to a text mesage to read the message 
+	public void onMessage(Message  message) {    	
+
+		try { 
+
+			// First determine we have been driven from an MDB queue
+			Destination jmsDestination = message.getJMSDestination();
+			if (jmsDestination instanceof Queue) {
+				String q = ((Queue) jmsDestination).getQueueName();
+				System.out.println(formatTime() + " Task:" + Task.getTask().getTaskNumber() + " Message received from MDB queue " + q ) ;
+			} else {
+				System.out.println(formatTime() + " ERROR:" + Task.getTask().getTaskNumber() + " Message received from invalid queue") ;
+			}
+
+			// Cast input message to a text mesage to read the message 
 			String txtMsg = ((TextMessage) message).getText(); 		
-       		
- 			// Construct the TSQ object
- 			TSQ tsqQ = new TSQ();
- 			tsqQ.setName(TSQNAME);	 			
-			
+
+			// Construct the TSQ object
+			TSQ tsqQ = new TSQ();
+			tsqQ.setName(TSQNAME);	 			
+
 			// Write the message text to the TSQ
 			tsqQ.writeString(txtMsg);
-			
+
 		} catch (CicsConditionException e) {
 			System.out.println(formatTime() + " ERROR: Task:" + Task.getTask().getTaskNumber() + " Exception: " + e.getLocalizedMessage() ) ;
 		} catch (JMSException e) {
@@ -90,8 +90,8 @@ public class MySimpleMDB implements MessageListener {
 		} finally {
 			System.out.println(formatTime() + " Task:" + Task.getTask().getTaskNumber() + " Message written to TSQ: " + TSQNAME ) ;
 		}
-    }
-    
+	}
+
 	public String formatTime() {
 		SimpleDateFormat dfTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
 		String time = dfTime.format(new Date());

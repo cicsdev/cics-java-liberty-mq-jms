@@ -40,35 +40,40 @@ import javax.servlet.http.HttpServletResponse;
 public class MQJMSDemo extends HttpServlet
 {
 
-    /**
-     * Name of the JMS connection factory
-     */
+	/**
+	 * tiemout for read of queue 
+	 */
+	private static final long TIMEOUT = 1000;
+
+	/**
+	 * Name of the JMS connection factory
+	 */
 	private static final String JMS_CF1 = "jms/qcf1";
-	
+
 	/**
-     * name of the standard JMS queue for puts/gets
-     */
+	 * name of the standard JMS queue for puts/gets
+	 */
 	private static final String JMS_SIMPLEQ = "jms/simpleq";
-	
+
 	/**
-     * name of the JMS MDB queue
-     */
+	 * name of the JMS MDB queue
+	 */
 	private static final String JMS_MDBQ = "jms/mdbq";
 
-	 /**
-     * Connection factory object
-     */
+	/**
+	 * Connection factory object
+	 */
 	private ConnectionFactory qcf = null;
-	
-	 /**
-     * JMS Queue object for the JMS tests
-     */
+
+	/**
+	 * JMS Queue object for the JMS tests
+	 */
 	private Queue simpleq = null;
-	
-	 /**
-     * JMS Queue object for the MDB test
-     */
-	
+
+	/**
+	 * JMS Queue object for the MDB test
+	 */
+
 	private Queue mdbq = null;	
 
 	/**
@@ -113,7 +118,7 @@ public class MQJMSDemo extends HttpServlet
 
 		} catch (NoSuchMethodException e) {
 			printWeb(pw, "No such test: " + test);
-			
+
 		} catch (NullPointerException npe) {
 			if (test == null ) {
 				printWeb(pw, "ERROR: No test parameter supplied");
@@ -156,7 +161,7 @@ public class MQJMSDemo extends HttpServlet
 
 			TextMessage msg;
 			do {
-				msg = (TextMessage) consumer.receive(500);
+				msg = (TextMessage) consumer.receive(TIMEOUT);
 				if ( msg != null) {
 					printWeb (pw, msg.getText());
 				}
@@ -185,22 +190,30 @@ public class MQJMSDemo extends HttpServlet
 		 */
 		PrintWriter pw = response.getWriter();
 
+		/*
+		 *  initialise strings		 
+		 */
+		String cicsmsg = formatTime() + " Simple JMS message for CICS";
 
 		/*
 		 *  Create JMS context from CF and then put 3 msgs on the queue	 
 		 */
 		try {
 			JMSContext context = qcf.createContext();
-			context.createProducer().send(simpleq, formatTime() + " message1"); 
-			context.createProducer().send(simpleq, formatTime() + " message2"); 
-			context.createProducer().send(simpleq, formatTime() + " message3");				
-			String title = "3 records have been written to " + simpleq.getQueueName() ;			
+			JMSProducer producer = context.createProducer();
+			
+			// Create message to be written to the producer then send it 
+			TextMessage message = context.createTextMessage(cicsmsg);
+			producer.send(simpleq, message);
+			
+			// Log message back to browser
+			String title = "Message has been written to " + simpleq.getQueueName() ;			
 			printWeb(pw, title);
 
-		} catch (Throwable x) {
-			x.printStackTrace();
+		} catch (JMSException je) {
+			je.printStackTrace();
 		}		
-		
+
 	}	
 	/**
 	 * Example writing msgs to a queue with an associated MDB
@@ -214,7 +227,7 @@ public class MQJMSDemo extends HttpServlet
 	 */	
 	public void putmdbQ(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-	
+
 		/*
 		 *  simple print writer for output stream		 
 		 */
@@ -224,25 +237,25 @@ public class MQJMSDemo extends HttpServlet
 		 * Initialise strings
 		 */		
 		String webmsg = null;
-		String cicsmsg = formatTime() + " Simple message for CICS";
-		
+		String cicsmsg = formatTime() + " Simple MDB message for CICS";
+
 		// Create context and producer from connection factory
 		JMSContext context = qcf.createContext();
 		JMSProducer producer = context.createProducer();
-		
+
 		// Create message to be written to the producer then send it 
 		TextMessage message = context.createTextMessage(cicsmsg);
 		producer.setProperty("TSQNAME", "MDBQ");
 		producer.send(mdbq, message);
-	
+
 		try {
 			webmsg = "Record has been written to MDB " + mdbq.getQueueName() + "\n";
 		} catch (JMSException e) {
-			
+
 			e.printStackTrace();
 		}
 		printWeb(pw, webmsg);		
-		
+
 	}
 
 	/**
@@ -256,7 +269,7 @@ public class MQJMSDemo extends HttpServlet
 	public void printWeb(PrintWriter pw, String msg) {
 
 		pw.print(formatTime() + " " + msg + "\n");		
-		
+
 	}
 
 	/**
