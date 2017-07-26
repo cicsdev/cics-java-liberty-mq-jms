@@ -5,7 +5,7 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 
 ## Repository structure
 
-* [`projects/`](projects) - Complete Eclipse projects suitable for importing into a CICS Explorer environment.
+* [`projects/`](projects) - Eclipse projects suitable for importing into a CICS Explorer environment.
 
 ## Samples overview
 
@@ -23,7 +23,7 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 * CICS TS V5.3 with APAR PI67640 and APAR PI58375, or CICS TS V5.4
 * Java SE 7 or later on the z/OS system
 * Java SE 7 or later on the workstation
-* CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [see](https://developer.ibm.com/mainframe/products/downloads)
+* CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM MQ V8.0 or later on z/OS
 * IBM MQ Version 9.0.1 resource adapter, available from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
 
