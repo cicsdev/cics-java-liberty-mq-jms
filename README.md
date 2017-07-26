@@ -2,6 +2,11 @@ cics-java-liberty-mq-jms
 ================
 Sample JMS Java EE web application demonstrating how to use a JMS Connection Factory and a message-driven bean (MDB) to get and put messages to queues managed using IBM MQ
 
+
+## Repository structure
+
+* [`projects/`](projects) - Complete Eclipse projects suitable for importing into a CICS Explorer environment.
+
 ## Samples overview
 
 * `com.ibm.cicsdev.mqjms.ear` - EAR project referring to the Web and EJB projects
@@ -10,9 +15,6 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 * `com.ibm.cicsdev.mqjms.cicsbundle` - CICS bundle project that references the EAR bundle part for deployment in a CICS bundle
 
 
-## Repository structure
-
-* [`projects/`](projects) - Complete Eclipse projects suitable for importing into a CICS Explorer environment.
 
 
 
