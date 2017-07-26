@@ -108,18 +108,20 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 
 
 * The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example:
-[http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)  
+[http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putq)  
 
 If the test is successful, you will see the following response written to the browser:  
 `22/06/2017 16:11:20 3 records have been written to queue:///DEMO.SIMPLEQ`
 
 * To read the records back specify the readQ parameter:
-[http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readQ)
+[http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readq)
 
 * To write records to the MDB queue specify the putmdbQ parameter:
-[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbQ)  
+[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbq)  
 
-To verify that the MDB has been triggered, you can browse the contents of the CICS TSQ RJMSTSQ using the CICS supplied CEBR transaction as the MDB will write the messages from the MDBQUEUE to this CICS TSQ. 
+* To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter
+[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=readtsq)
+
 
 ## Reference
 *  IBM Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dep_msg_mdbwmq.html)
