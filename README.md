@@ -120,7 +120,7 @@ If the test is successful, you will see the following response written to the br
 [http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbq)  
 
 * To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter:
-[http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=readtsq)
+[http://host:port/jmsweb?test=readtsq](http://host:port/jmsweb?test=readtsq)
 
 
 ## Reference
