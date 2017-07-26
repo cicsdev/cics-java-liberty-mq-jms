@@ -119,7 +119,7 @@ If the test is successful, you will see the following response written to the br
 * To write records to the MDB queue specify the putmdbQ parameter:
 [http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbq)  
 
-* To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter
+* To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter:
 [http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=readtsq)
 
 
