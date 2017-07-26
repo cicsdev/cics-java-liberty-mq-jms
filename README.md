@@ -122,7 +122,7 @@ To verify that the MDB has been triggered, you can browse the contents of the CI
 
 ## Reference
 *  IBM Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dep_msg_mdbwmq.html)
-*  [Defining MDB queues as shareable] (http://www-01.ibm.com/support/docview.wss?uid=swg21232930) You will get the error MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable 
+*  MQRC_OBJECT_IN_USE - [Defining MDB queues as shareable] (http://www-01.ibm.com/support/docview.wss?uid=swg21232930) You will get the error MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable 
 *  For further details on the JCICS APIs used in this sample refer to this [developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
 
 
