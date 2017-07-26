@@ -65,8 +65,9 @@ Setup the following resources in the IBM MQ queue manager
         hostName="localhost" 
         port="<your port>" queueManager="<your queue manager>" 
         transportType="CLIENT"/>
-    </jmsQueueConnectionFactory>
-    <connectionManager id="ConMgr" maxPoolSize="10"/>  
+</jmsQueueConnectionFactory>
+    
+<connectionManager id="ConMgr" maxPoolSize="10"/>  
 ```
 5.Add a definition for the queues required by the test as follows:
 ```xml
@@ -100,7 +101,7 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 ### To deploy the sample into a CICS region 
 1. Change the name of the JVMSERVER in the .warbundle file from DFHWLP to the name of the JVMSERVER resource defined in CICS. 
 1. Using the CICS Explorer export the com.ibm.cicsdev.mqjms.cicsbundle project to a zFS directory. 
-1. Define and install a CICS `BUNDLE` resource definition referring to the deployed bundle directory on zFS in step 2, and ensure all resources are enabled. 
+1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 2, and ensure all resources are enabled. 
 
 ## Running the sample
 
@@ -121,7 +122,7 @@ To verify that the MDB has been triggered, you can browse the contents of the CI
 
 ## Reference
 *  IBM Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dep_msg_mdbwmq.html)
-*  [Defining MDB queues as shareable] You will get the error MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable (http://www-01.ibm.com/support/docview.wss?uid=swg21232930)
+*  [Defining MDB queues as shareable] (http://www-01.ibm.com/support/docview.wss?uid=swg21232930) You will get the error MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable 
 *  For further details on the JCICS APIs used in this sample refer to this [developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
 
 
