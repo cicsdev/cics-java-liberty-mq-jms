@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2016 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -19,6 +19,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.JMSRuntimeException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
@@ -29,7 +30,7 @@ import com.ibm.cics.server.TSQ;
 import com.ibm.cics.server.Task;
 
 /**
- * Message-Driven Bean implementation class for: MySimpleMDB
+ * Message-Driven Bean implementation class for MySimpleMDB
  * 
  * 
  * The <jmsActivationSpec id> attribute must match the format of application_name/module_name/bean_name when this app is deployed  
@@ -39,11 +40,9 @@ import com.ibm.cics.server.Task;
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue") })
 public class MySimpleMDB implements MessageListener {
-
-	/**	
-	 * The CICS TSQ that will be written to	
-	 */
-	private static final String TSQNAME = "RJMSTSQ";
+	
+	/** Time format */
+	static SimpleDateFormat dfTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	/**
 	 * Default constructor
@@ -56,44 +55,54 @@ public class MySimpleMDB implements MessageListener {
 	 * The onMessage() method is invoked by the EJB container when the queue receives a msg
 	 * Set TransactionAttributeType.REQUIRED to make container managed JTA transaction to control CICS UOW
 	 *      
-	 * @param message - The incoming message
+	 * @param jmsmsg - The incoming JMS message
 	 */ 
 	@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
-	public void onMessage(Message  message) {    	
+	public void onMessage(Message  jmsmsg) { 
+		
+		// Get CICS task number
+		int cicsTask = Task.getTask().getTaskNumber();			
 
 		try { 
 
-			// First determine we have been driven from an MDB queue
-			Destination jmsDestination = message.getJMSDestination();
-			if (jmsDestination instanceof Queue) {
-				String q = ((Queue) jmsDestination).getQueueName();
-				System.out.println(formatTime() + " Task:" + Task.getTask().getTaskNumber() + " Message received from MDB queue " + q ) ;
-			} else {
-				System.out.println(formatTime() + " ERROR:" + Task.getTask().getTaskNumber() + " Message received from invalid queue") ;
-			}
+			// Get destination to allow us to check the queue name
+			Destination jmsDestination = jmsmsg.getJMSDestination();			
+			String q = ((Queue) jmsDestination).getQueueName();
+			
+			System.out.println(formatTime() + " Task:" + cicsTask + " Message received from MDB queue " + q ) ;		
 
-			// Cast input message to a text mesage to read the message 
-			String txtMsg = ((TextMessage) message).getText(); 		
+			// Cast input message to a text message to read the message body
+			String strMsg;
+			try {
+				strMsg = ((TextMessage) jmsmsg).getText();
+			} catch (ClassCastException e) {
+				System.out.println(formatTime() + " Task:" + cicsTask + " ERROR: invalid message received " + q ) ;		
+				e.printStackTrace();
+				throw (e);
+			}					
 
-			// Construct the TSQ object
+			// Construct the TSQ object and set the name 
+			String TSQname =  jmsmsg.getStringProperty("TSQNAME");
 			TSQ tsqQ = new TSQ();
-			tsqQ.setName(TSQNAME);	 			
+			tsqQ.setName(TSQname);
 
-			// Write the message text to the TSQ
-			tsqQ.writeString(txtMsg);
+			// Write the message contents back to the CICS TSQ
+			tsqQ.writeString(strMsg);
+			System.out.println(formatTime() + " Task:" + cicsTask + " Message written to TSQ: " + TSQname);
 
 		} catch (CicsConditionException e) {
-			System.out.println(formatTime() + " ERROR: Task:" + Task.getTask().getTaskNumber() + " Exception: " + e.getLocalizedMessage() ) ;
-		} catch (JMSException e) {
-			System.out.println(formatTime() + " ERROR: JMS error " + Task.getTask().getTaskNumber() + " Exception: " + e.getLocalizedMessage() ) ;
-			e.printStackTrace();			
-		} finally {
-			System.out.println(formatTime() + " Task:" + Task.getTask().getTaskNumber() + " Message written to TSQ: " + TSQNAME ) ;
-		}
+			System.out.println(formatTime() + " ERROR: Task:" + cicsTask + " Exception: " + e.getLocalizedMessage() ) ;
+		} catch (JMSRuntimeException|JMSException e) {
+			System.out.println(formatTime() + " ERROR: JMS error " + cicsTask + " Exception: " + e.getLocalizedMessage() ) ;
+			e.printStackTrace();		
+		} 
 	}
 
+	/**
+	 * @return String formatted time stamp
+	 */
 	public String formatTime() {
-		SimpleDateFormat dfTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+		
 		String time = dfTime.format(new Date());
 		return time;
 	}
