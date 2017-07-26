@@ -25,8 +25,7 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 * Java SE 7 or later on the workstation
 * CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [see](https://developer.ibm.com/mainframe/products/downloads)
 * IBM MQ V8.0 or later on z/OS
-* IBM MQ Version 9.0.1 resource adapter, available from [IBM Fix Central](https://www.ibm.com/support/fixcentral/)
- 
+* IBM MQ Version 9.0.1 resource adapter, available from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
 
 ## Configuration
 
@@ -50,7 +49,7 @@ Setup the following resources in the IBM MQ queue manager
 ### To configure CICS
 1.Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 
-2.Download and install the MQ V9 RAR. This is available at [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) and then define the RAR in the Liberty server.xml configuration file as follows:
+2.Download and install the MQ V9 RAR and then define the RAR in the Liberty server.xml configuration file as follows:
 `<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>`
 
 3.Ensure the following Liberty features are present in server.xml
