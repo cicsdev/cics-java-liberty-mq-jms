@@ -32,6 +32,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cics.server.ItemHolder;
+import com.ibm.cics.server.TSQ;
+
 /**
  * Servlet implementation of JMS MQ demo
  * 
@@ -39,6 +42,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/MQJMSDemo")
 public class MQJMSDemo extends HttpServlet {
+
+	/** CICS local ccsid */
+	private static final String CCSID = System.getProperty("com.ibm.cics.jvmserver.local.ccsid");
 
 	/** timeout for read of queue in ms */
 	private static final long TIMEOUT = 100;
@@ -69,6 +75,9 @@ public class MQJMSDemo extends HttpServlet {
 
 	/** CICS TSQ that will be written to */
 	private static final String TSQNAME = "RJMSTSQ";
+
+	/** Maximum TSQ read depth */
+	private static final int DEPTH_COUNT = 100;
 
 	/**
 	 * Servlet initialisation method called only on initialisation of web app
@@ -120,6 +129,8 @@ public class MQJMSDemo extends HttpServlet {
 					putQ(request, response);
 				} else if (test.equalsIgnoreCase("putmdbq")) {
 					putmdbQ(request, response);
+				} else if (test.equalsIgnoreCase("readtsq")) {
+					readTSQ(request, response);
 				} else if (test.isEmpty()) {
 					printWeb(pw, "Empty test param specified");
 				} else {
@@ -299,6 +310,45 @@ public class MQJMSDemo extends HttpServlet {
 
 		webmsg = "Record has been written to MDB queue " + "\n";
 		printWeb(pw, webmsg);
+
+	}
+
+	/**
+	 * Read the TSQ written to by the MDB and construct a HTTP response
+	 *
+	 * @param request
+	 *            - HTTP request
+	 * @param response
+	 *            - HTTP response
+	 * @throws Exception
+	 *             - if an error occurs.
+	 */
+	public void readTSQ(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		// Initialise variables;
+		PrintWriter pw = response.getWriter();
+		String webmsg;
+
+		// Construct the TSQ object and set the name
+		TSQ tsqQ = new TSQ();
+		tsqQ.setName(TSQNAME);
+
+		// holder object to receive the data from CICS
+		ItemHolder holder = new ItemHolder();
+
+		webmsg = "Records read from TSQ (" + TSQNAME + ") are as follows:";
+		printWeb(pw, webmsg);
+
+		for (int i = 1; i <= DEPTH_COUNT; i++) {
+
+			tsqQ.readItem(i, holder);
+			byte[] data = holder.getValue();
+			String strData = new String(data, CCSID);
+
+			webmsg = "Record[" + i + "] " + strData;
+			printWeb(pw, webmsg);
+
+		}
 
 	}
 
