@@ -58,7 +58,7 @@ Setup the following resources in the IBM MQ queue manager
 <feature>mdb-3.2</feature>
 <feature>jndi-1.0</feature>
 ```
-4 Add a JMS connection factory definition to the server.xml as follows:
+4.Add a JMS connection factory definition to the server.xml as follows:
 ```xml
 <jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
     <properties.wmqJms channel="WAS.JMS.SVRCONN" 
@@ -68,7 +68,7 @@ Setup the following resources in the IBM MQ queue manager
     </jmsQueueConnectionFactory>
     <connectionManager id="ConMgr" maxPoolSize="10"/>  
 ```
-5 Add a definition for the queues required by the test as follows:
+5.Add a definition for the queues required by the test as follows:
 ```xml
 <jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
     <properties.wmqJms baseQueueName="DEMO.SIMPLEQ" />
@@ -77,7 +77,7 @@ Setup the following resources in the IBM MQ queue manager
     <properties.wmqJms baseQueueName="DEMO.MDBQUEUE" />
 </jmsQueue>  
 ```
-6 Add a JMS activation spec to the server.xml to define our MDB that will be invoked from the MDB queue. 
+6.Add a JMS activation spec to the server.xml to define our MDB that will be invoked from the MDB queue. 
         
 ```xml
 <jmsActivationSpec id="mySimpleJMSEAR/mySimpleJMSMDB/MySimpleMDB">
@@ -93,7 +93,7 @@ The jmsActivationSpec must be in the format of application name/module name/bean
 
 The `hostName`, `port`, `queueManager` properties in each of these elements should be set based on your local MQ configuration. The `transportType` property must be set to `CLIENT`
 
-7 Define and install a CICS TSMODEL resource named RJMSTSQ with the attribute RECOVERY(YES) if you want to run the MDB test
+7.Define and install a CICS TSMODEL resource named RJMSTSQ with the attribute RECOVERY(YES) if you want to run the MDB test
 
  
 
