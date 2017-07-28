@@ -51,7 +51,7 @@ Setup the following resources in the IBM MQ queue manager
 
 2.Install the MQ V9 RAR and then define the RAR location in the Liberty server.xml configuration file as follows:
  ```xml
-`<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>`
+<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>
 ```
 
 3.Ensure the following Liberty features are present in server.xml
