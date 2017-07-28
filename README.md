@@ -126,10 +126,10 @@ If the test is successful, you will see the following response written to the br
 
 
 ## Reference
-*  IBM MQ Knowledge Center [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm)
-*  IBM Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dep_msg_mdbwmq.html)
+*  MQ Knowledge Center [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm)
+*  Liberty Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html)
 *  MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable [Defining MDB queues as shareable](http://www-01.ibm.com/support/docview.wss?uid=swg21232930)
-*  For further details on the JCICS APIs used in this sample refer to this [developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
+*  For further details on the JCICS APIs used in this sample refer to this [CICS developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
 
 
 ## License
