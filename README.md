@@ -49,8 +49,10 @@ Setup the following resources in the IBM MQ queue manager
 ### To configure CICS
 1.Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 
-2.Download and install the MQ V9 RAR and then define the RAR in the Liberty server.xml configuration file as follows:
+2.Install the MQ V9 RAR and then define the RAR location in the Liberty server.xml configuration file as follows:
+ ```xml
 `<variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>`
+```
 
 3.Ensure the following Liberty features are present in server.xml
  ```xml
@@ -95,7 +97,7 @@ The jmsActivationSpec must be in the format of application name/module name/bean
 
 The `hostName`, `port`, `queueManager` properties in each of these elements should be set based on your local MQ configuration. The `transportType` property must be set to `CLIENT`
 
-7.Define and install a CICS TSMODEL resource named RJMSTSQ with the attribute RECOVERY(YES) if you want to run the MDB test
+7.Optinally define and install a CICS TSMODEL resource named RJMSTSQ with the attribute RECOVERY(YES) if you want to make the MDB test transactional.
 
  
 
@@ -111,7 +113,7 @@ The `hostName`, `port`, `queueManager` properties in each of these elements shou
 [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putq)  
 
 If the test is successful, you will see the following response written to the browser:  
-`22/06/2017 16:11:20 3 records have been written to queue:///DEMO.SIMPLEQ`
+`22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
 
 * To read the records back specify the readQ parameter:
 [http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readq)
@@ -124,6 +126,7 @@ If the test is successful, you will see the following response written to the br
 
 
 ## Reference
+*  IBM MQ Knowledge Center [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm)
 *  IBM Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_dep_msg_mdbwmq.html)
 *  MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable [Defining MDB queues as shareable](http://www-01.ibm.com/support/docview.wss?uid=swg21232930)
 *  For further details on the JCICS APIs used in this sample refer to this [developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
