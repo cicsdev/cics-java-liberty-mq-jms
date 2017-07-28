@@ -97,7 +97,9 @@ The jmsActivationSpec must be in the format of application name/module name/bean
 
 The `hostName`, `port`, `queueManager` properties in each of these elements should be set based on your local MQ configuration. The `transportType` property must be set to `CLIENT`
 
+
 7.Optinally define and install a CICS TSMODEL resource named RJMSTSQ with the attribute RECOVERY(YES) if you want to make the MDB test transactional.
+
 
  
 
@@ -130,6 +132,7 @@ If the test is successful, you will see the following response written to the br
 *  Liberty Knowledge Center [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html)
 *  MQRC_OBJECT_IN_USE if the MDB tries to get a message from a queue that is not defined as shareable [Defining MDB queues as shareable](http://www-01.ibm.com/support/docview.wss?uid=swg21232930)
 *  For further details on the JCICS APIs used in this sample refer to this [CICS developer center article](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/)
+
 
 
 ## License
