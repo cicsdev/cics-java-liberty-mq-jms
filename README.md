@@ -16,8 +16,6 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 
 
 
-
-
 ## Pre-requisites
 
 * CICS TS V5.3 with APAR PI67640 and APAR PI58375, or CICS TS V5.4
