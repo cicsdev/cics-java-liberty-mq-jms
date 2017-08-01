@@ -203,7 +203,6 @@ public class MQJMSDemo extends HttpServlet {
 
 		} catch (JMSRuntimeException | JMSException jre) {
 			webmsg = "ERROR on JMS receive" + jre.getMessage();
-			printWeb(pw, webmsg);
 			throw new RuntimeException(webmsg, jre);
 
 		}
