@@ -12,10 +12,13 @@ package com.ibm.cicsdev.mqjms.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.lang.RuntimeException;
 
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.jms.JMSConsumer;
@@ -32,6 +35,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cics.server.CicsConditionException;
+import com.ibm.cics.server.ItemErrorException;
 import com.ibm.cics.server.ItemHolder;
 import com.ibm.cics.server.TSQ;
 
@@ -89,6 +94,8 @@ public class MQJMSDemo extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 
+		String errmsg;
+
 		// JNDI lookups for all the JNDI strings in this test
 		try {
 			InitialContext ctx = new InitialContext();
@@ -97,9 +104,8 @@ public class MQJMSDemo extends HttpServlet {
 			mdbq = (Queue) ctx.lookup(JMS_MDBQ);
 
 		} catch (NamingException ne) {
-			System.out.println(
-					formatTime() + " ERROR: " + ne.getMessage() + " on JNDI lookup in servlet initialisation ");
-			ne.printStackTrace();
+			errmsg = " ERROR: On JNDI lookup in servlet initialisation ";
+			throw new ServletException(errmsg, ne);
 		}
 	}
 
@@ -111,9 +117,11 @@ public class MQJMSDemo extends HttpServlet {
 	 * @param response
 	 *            - HTTP response
 	 * @throws IOException
-	 *             - if an error occurs
+	 * @throws ServletException
+	 *             - if an error occurs.
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 
 		// Initialise variables;
 		PrintWriter pw = response.getWriter();
@@ -122,24 +130,20 @@ public class MQJMSDemo extends HttpServlet {
 		String test = request.getParameter("test");
 		if (test != null) {
 
-			try {
-				if (test.equalsIgnoreCase("readq")) {
-					readQ(request, response);
-				} else if (test.equalsIgnoreCase("putq")) {
-					putQ(request, response);
-				} else if (test.equalsIgnoreCase("putmdbq")) {
-					putmdbQ(request, response);
-				} else if (test.equalsIgnoreCase("readtsq")) {
-					readTSQ(request, response);
-				} else if (test.isEmpty()) {
-					printWeb(pw, "Empty test param specified");
-				} else {
-					printWeb(pw, "Invalid test param specified: " + test);
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (test.equalsIgnoreCase("readq")) {
+				readQ(request, response);
+			} else if (test.equalsIgnoreCase("putq")) {
+				putQ(request, response);
+			} else if (test.equalsIgnoreCase("putmdbq")) {
+				putmdbQ(request, response);
+			} else if (test.equalsIgnoreCase("readtsq")) {
+				readTSQ(request, response);
+			} else if (test.isEmpty()) {
+				printWeb(pw, "Empty test param specified");
+			} else {
+				printWeb(pw, "Invalid test param specified: " + test);
 			}
+
 		} else {
 			printWeb(pw, "No test param specified: ");
 
@@ -154,16 +158,17 @@ public class MQJMSDemo extends HttpServlet {
 	 *            - HTTP request
 	 * @param response
 	 *            - HTTP response
-	 * @throws Exception
+	 * @throws IOException
+	 * @throws ServletException
 	 *             - if an error occurs.
 	 */
-	public void readQ(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void readQ(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// Initialise variables;
 		PrintWriter pw = response.getWriter();
 		String webmsg;
 		JMSConsumer consumer;
-		JMSContext context = null;
+		JMSContext context;
 
 		// Connect to the QM by creating the JMS context
 		try {
@@ -172,8 +177,7 @@ public class MQJMSDemo extends HttpServlet {
 
 		} catch (JMSRuntimeException jre) {
 			webmsg = " ERROR: " + jre.getMessage() + " on connection to QM ";
-			printWeb(pw, webmsg);
-			jre.printStackTrace();
+			throw new ServletException(webmsg, jre);
 		}
 
 		// Read contents of queue and construct a response
@@ -186,19 +190,19 @@ public class MQJMSDemo extends HttpServlet {
 				webmsg = "First " + READ_COUNT + " records read from " + simpleq.getQueueName() + " are as follows:";
 				printWeb(pw, webmsg);
 
-				TextMessage txtmsg;
+				String txtmsg;
 				for (int i = 0; i < READ_COUNT; i++) {
-					txtmsg = (TextMessage) consumer.receive(TIMEOUT);
+					txtmsg =  consumer.receiveBody(String.class, TIMEOUT);
 					if (txtmsg != null) {
-						printWeb(pw, txtmsg.getText());
+						printWeb(pw, txtmsg);
 					}
 				}
 			}
 
-		} catch (JMSRuntimeException jre) {
-			webmsg = "ERROR on JMS receive from " + simpleq.getQueueName() + " jre.getMessage()";
-			printWeb(pw, webmsg);
-			jre.printStackTrace();
+		} catch (JMSRuntimeException | JMSException jre) {
+			webmsg = "ERROR on JMS receive" + jre.getMessage();
+			throw new RuntimeException(webmsg, jre);
+
 		}
 	}
 
@@ -209,53 +213,33 @@ public class MQJMSDemo extends HttpServlet {
 	 *            - HTTP request
 	 * @param response
 	 *            - HTTP response
-	 * @throws Exception
+	 * @throws IOException
+	 * @throws ServletException
 	 *             - if an error occurs.
 	 */
-	public void putQ(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void putQ(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// Initialise objects;
 		PrintWriter pw = response.getWriter();
 		String cicsmsg = formatTime() + " Simple JMS message for CICS";
-		String msgStr;
-
-		JMSContext context = null;
-		JMSProducer producer;
+		String webmsg;
 
 		// Connect to the QM by creating the JMS context
-		try {
+		// context will be autoclosed due to usage in try/with
+		try ( JMSContext context = qcf.createContext() ) {
+			
+			// Producer allows message delivery options and headers to be set 
+			JMSProducer producer = context.createProducer();
+			producer.send(simpleq, cicsmsg);
 
-			context = qcf.createContext();
+			// Log message back to browser
+			String title = "Message has been written to " + simpleq.getQueueName();
+			printWeb(pw, title);
 
-		} catch (JMSRuntimeException jre) {
-			msgStr = " ERROR: " + jre.getMessage() + " on connection to QM ";
-			printWeb(pw, msgStr);
-			jre.printStackTrace();
-
+		} catch (JMSException | JMSRuntimeException jre) {
+			webmsg = "ERROR on JMS send " + jre.getMessage();
+			throw new ServletException(webmsg, jre);
 		}
-
-		try {
-
-			// check we have a connection to MQ
-			if (context != null) {
-
-				// Create message to be written to the producer then send it
-				producer = context.createProducer();
-				producer.send(simpleq, cicsmsg);
-
-				// Log message back to browser
-				String title = "Message has been written to " + simpleq.getQueueName();
-				printWeb(pw, title);
-			}
-
-		} catch (JMSRuntimeException jre) {
-
-			msgStr = "ERROR on JMS send to " + simpleq.getQueueName() + " jre.getMessage()";
-			printWeb(pw, msgStr);
-			jre.printStackTrace();
-
-		}
-
 	}
 
 	/**
@@ -266,14 +250,16 @@ public class MQJMSDemo extends HttpServlet {
 	 * @param response
 	 *            - HTTP response
 	 * @throws IOException
+	 * @throws ServletException
+	 *             - if an error occurs.
 	 */
-	public void putmdbQ(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void putmdbQ(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 		// Initialise variables
 		PrintWriter pw = response.getWriter();
 		String webmsg;
 		String cicsmsg = formatTime() + " Simple MDB message for CICS";
-		JMSContext context = null;
+		JMSContext context;
 		JMSProducer producer;
 
 		// Connect to the QM by creating the JMS context
@@ -282,30 +268,23 @@ public class MQJMSDemo extends HttpServlet {
 			context = qcf.createContext();
 
 		} catch (JMSRuntimeException jre) {
-			System.out.println(formatTime() + " ERROR: " + jre.getMessage() + " on connection to QM ");
-			jre.printStackTrace();
+			webmsg = " ERROR: " + jre.getMessage() + " on connection to QM ";
+			throw new ServletException(webmsg, jre);
 		}
 
 		try {
 
-			// check we have a connection to MQ
-			if (context != null) {
+			// Create producer and set the property to define the CICS TSQ
+			producer = context.createProducer();
+			producer.setProperty("TSQNAME", TSQNAME);
 
-				// Create producer and set the property to define the CICS TSQ
-				producer = context.createProducer();
-				producer.setProperty("TSQNAME", TSQNAME);
-
-				// Send the message to the MDB queue
-				producer.send(mdbq, cicsmsg);
-			}
+			// Send the message to the MDB queue
+			producer.send(mdbq, cicsmsg);
 
 		} catch (JMSRuntimeException jre) {
 
 			webmsg = "ERROR: " + jre.getMessage() + " on put to MDB " + "\n";
-			printWeb(pw, webmsg);
-			jre.printStackTrace();
-			throw (jre);
-
+			throw new ServletException(webmsg, jre);
 		}
 
 		webmsg = "Record has been written to MDB queue " + "\n";
@@ -320,34 +299,48 @@ public class MQJMSDemo extends HttpServlet {
 	 *            - HTTP request
 	 * @param response
 	 *            - HTTP response
-	 * @throws Exception
+	 * @throws IOException
+	 * @throws ServletException
 	 *             - if an error occurs.
 	 */
-	public void readTSQ(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void readTSQ(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// Initialise variables;
 		PrintWriter pw = response.getWriter();
 		String webmsg;
 
-		// Construct the TSQ object and set the name
-		TSQ tsqQ = new TSQ();
-		tsqQ.setName(TSQNAME);
+		try {
+			// Construct the TSQ object and set the name
+			TSQ tsqQ = new TSQ();
+			tsqQ.setName(TSQNAME);
 
-		// holder object to receive the data from CICS
-		ItemHolder holder = new ItemHolder();
+			// holder object to receive the data from CICS
+			ItemHolder holder = new ItemHolder();
 
-		webmsg = "Records read from TSQ (" + TSQNAME + ") are as follows:";
-		printWeb(pw, webmsg);
-
-		for (int i = 1; i <= DEPTH_COUNT; i++) {
-
-			tsqQ.readItem(i, holder);
-			byte[] data = holder.getValue();
-			String strData = new String(data, CCSID);
-
-			webmsg = "Record[" + i + "] " + strData;
+			webmsg = "Records read from TSQ (" + TSQNAME + ") are as follows:";
 			printWeb(pw, webmsg);
 
+			for (int i = 1; i <= DEPTH_COUNT; i++) {
+
+				tsqQ.readItem(i, holder);
+				byte[] data = holder.getValue();
+				String strData = new String(data, CCSID);
+
+				webmsg = "Record[" + i + "] " + strData;
+				printWeb(pw, webmsg);
+
+			}
+			
+		} catch (ItemErrorException e) {
+			// Normal error reading from TSQ so ignore this
+			
+		} catch (CicsConditionException e) {
+			webmsg = "ERROR reading from TSQ (" + TSQNAME + ")";
+			throw new ServletException(webmsg, e);
+			
+		} catch (UnsupportedEncodingException e) {
+			webmsg = "ERROR reading string data with encoding (" + CCSID + ")";
+			throw new ServletException(webmsg, e);
 		}
 
 	}
