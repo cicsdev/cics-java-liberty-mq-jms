@@ -15,17 +15,15 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.lang.RuntimeException;
 
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.jms.JMSConsumer;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
-import javax.jms.TextMessage;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
@@ -50,9 +48,6 @@ public class MQJMSDemo extends HttpServlet {
 
 	/** CICS local ccsid */
 	private static final String CCSID = System.getProperty("com.ibm.cics.jvmserver.local.ccsid");
-
-	/** timeout for read of queue in ms */
-	private static final long TIMEOUT = 100;
 
 	/** loop count for read of queue */
 	private static final int READ_COUNT = 10;
@@ -167,42 +162,31 @@ public class MQJMSDemo extends HttpServlet {
 		// Initialise variables;
 		PrintWriter pw = response.getWriter();
 		String webmsg;
-		JMSConsumer consumer;
-		JMSContext context;
 
 		// Connect to the QM by creating the JMS context
-		try {
+		// context will be autoclosed due to usage in try/with
+		try (JMSContext context = qcf.createContext()) {
 
-			context = qcf.createContext();
+			// Create the consumer from the context specifying the queue
+			JMSConsumer consumer = context.createConsumer(simpleq);
 
-		} catch (JMSRuntimeException jre) {
-			webmsg = " ERROR: " + jre.getMessage() + " on connection to QM ";
-			throw new ServletException(webmsg, jre);
-		}
+			// Read messages from the queue until it is empty or we hit READ_COUNT
+			webmsg = "Records read from " + simpleq.getQueueName() + " are as follows:";
+			printWeb(pw, webmsg);
 
-		// Read contents of queue and construct a response
-		try {
-
-			if (context != null) {
-				consumer = context.createConsumer(simpleq);
-
-				// Read first batch of messages from the queue
-				webmsg = "First " + READ_COUNT + " records read from " + simpleq.getQueueName() + " are as follows:";
-				printWeb(pw, webmsg);
-
-				String txtmsg;
-				for (int i = 0; i < READ_COUNT; i++) {
-					txtmsg =  consumer.receiveBody(String.class, TIMEOUT);
-					if (txtmsg != null) {
-						printWeb(pw, txtmsg);
-					}
+			String txtmsg;
+			for (int i = 0; i < READ_COUNT; i++) {
+				txtmsg = consumer.receiveBodyNoWait(String.class);
+				if (txtmsg != null) {
+					webmsg = "Record[" + i + "] " + txtmsg;
+					printWeb(pw, webmsg);
+				} else {
+					break;
 				}
 			}
-
 		} catch (JMSRuntimeException | JMSException jre) {
 			webmsg = "ERROR on JMS receive" + jre.getMessage();
-			throw new RuntimeException(webmsg, jre);
-
+			throw new ServletException(webmsg, jre);
 		}
 	}
 
@@ -226,9 +210,9 @@ public class MQJMSDemo extends HttpServlet {
 
 		// Connect to the QM by creating the JMS context
 		// context will be autoclosed due to usage in try/with
-		try ( JMSContext context = qcf.createContext() ) {
-			
-			// Producer allows message delivery options and headers to be set 
+		try (JMSContext context = qcf.createContext()) {
+
+			// Producer allows message delivery options and headers to be set
 			JMSProducer producer = context.createProducer();
 			producer.send(simpleq, cicsmsg);
 
@@ -320,6 +304,7 @@ public class MQJMSDemo extends HttpServlet {
 			webmsg = "Records read from TSQ (" + TSQNAME + ") are as follows:";
 			printWeb(pw, webmsg);
 
+			// Read through the TSQ records until get an ItemError
 			for (int i = 1; i <= DEPTH_COUNT; i++) {
 
 				tsqQ.readItem(i, holder);
@@ -330,14 +315,14 @@ public class MQJMSDemo extends HttpServlet {
 				printWeb(pw, webmsg);
 
 			}
-			
+
 		} catch (ItemErrorException e) {
-			// Normal error reading from TSQ so ignore this
-			
+			// Normal condition indicating end of records so ignore this
+
 		} catch (CicsConditionException e) {
 			webmsg = "ERROR reading from TSQ (" + TSQNAME + ")";
 			throw new ServletException(webmsg, e);
-			
+
 		} catch (UnsupportedEncodingException e) {
 			webmsg = "ERROR reading string data with encoding (" + CCSID + ")";
 			throw new ServletException(webmsg, e);
