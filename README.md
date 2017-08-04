@@ -56,7 +56,7 @@ Setup the following resources in the IBM MQ queue manager:
     <feature>wmqJmsClient-2.0</feature>
     ```
 
-1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` and `localhost`.
+1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queueManager>` and `localhost`.
 
     ```xml
     <jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
@@ -101,28 +101,30 @@ Setup the following resources in the IBM MQ queue manager:
     [6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification
     ```
 
-1. Optinally define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
+1. Optionally, if you want to make the MDB test transactional define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)`.
 
 ### Deploy the sample into CICS
 
-1. Optionally, change the name of the JVMSERVER in the .warbundle file from DFHWLP to the name of the JVMSERVER resource defined in CICS
+1. Optionally, change `DFHWLP` in `com.ibm.cicsdev.mqjms.ear.earbundle` to the name of the JVMSERVER resource defined in CICS
 1. Using the CICS Explorer, export the com.ibm.cicsdev.mqjms.cicsbundle project to a zFS directory
 1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 2, and ensure all resources are enabled
 
 ## Running the sample
 
-* The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example: [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putq)
+The Web application is configured with a context root of *jmsweb*.
 
-    If the test is successful, you will see the following response written to the browser:
+* To invoke the servlet to write records specify the query string parameter `test=putQ` - for example: [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putQ)
+
+    If the test is successful, you will see the following on the browser:
     `22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
 
-* To read the records back specify the readQ parameter: [http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readq)
+* To read the records back specify the readQ parameter: [http://host:port/jmsweb?test=readQ](http://host:port/jmsweb?test=readQ)
 
-* To write records to the MDB queue specify the putmdbQ parameter: [http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbq)
+* To write records to the MDB queue specify the putmdbQ parameter: [http://host:port/jmsweb?test=putmdbQ](http://host:port/jmsweb?test=putmdbQ)
 
-* To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter: [http://host:port/jmsweb?test=readtsq](http://host:port/jmsweb?test=readtsq)
+* To verify that the MDB has been triggered, you can read the contents of the CICS TSQ using the readTSQ test parameter: [http://host:port/jmsweb?test=readTSQ](http://host:port/jmsweb?test=readTSQ)
 
-## Reference
+## References
 
 *  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the IBM MQ Knowledge Center
 *  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html) in the Liberty Knowledge Center
