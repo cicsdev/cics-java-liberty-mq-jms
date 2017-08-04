@@ -17,7 +17,7 @@ Sample JMS Java EE web application demonstrating how to use a JMS Connection Fac
 
 * IBM CICS TS V5.3 with APAR [PI58375](http://www-01.ibm.com/support/docview.wss?uid=swg1PI58375) and [PI67640](http://www-01.ibm.com/support/docview.wss?uid=swg1PI67640), or CICS TS V5.4
 * IBM MQ V8.0 or later on z/OS
-* IBM MQ Version 9.0.1 resource adapter. Download from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
+* IBM MQ Resource Adapter version 9.0.1. Download from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
 * IBM CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed. Download from [IBM Mainframe DEV](https://developer.ibm.com/mainframe/products/downloads)
 * Java SE 7 or later on the workstation
 
@@ -40,38 +40,37 @@ Setup the following resources in the IBM MQ queue manager:
 
 ### Configure CICS
 
-1. Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/).
+1. Create a Liberty JVM server as described in [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/).
 
-1. Install the MQ V9 RAR and then define the RAR location in the Liberty server.xml configuration file as follows:
+1. Install the MQ V9 RAR and then define the RAR location in the Liberty server.xml configuration file. Replace `<path>`.
 
     ```xml
-    <variable name="wmqJmsClient.rar.location" value="/u/cics1/RARs/wmq.jmsra.rar"/>
+    <variable name="wmqJmsClient.rar.location" value="<path>wmq.jmsra.rar" />
     ```
 
-1. Ensure the following Liberty features are present in server.xml
+1. Ensure the following Liberty features are present in server.xml.
 
     ```xml
     <feature>cicsts:core-1.0</feature>
-    <feature>wmqJmsClient-2.0</feature>
     <feature>mdb-3.2</feature>
-    <feature>jndi-1.0</feature>
+    <feature>wmqJmsClient-2.0</feature>
     ```
 
-1. Add a JMS connection factory definition to the server.xml as follows:
+1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` and `localhost`.
 
     ```xml
     <jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
-        <properties.wmqJms channel="WAS.JMS.SVRCONN" 
-            hostName="localhost" 
-            port="<your port>"
-            queueManager="<your queue manager>" 
+        <properties.wmqJms channel="WAS.JMS.SVRCONN"
+            hostName="localhost"
+            port="<port>"
+            queueManager="<queueManager>"
             transportType="CLIENT"/>
     </jmsQueueConnectionFactory>
     
     <connectionManager id="ConMgr" maxPoolSize="10"/>
     ```
 
-1. Add a definition for the queues required by the test as follows:
+1. Add a definition for the queues required by the test.
 
     ```xml
     <jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
@@ -83,27 +82,26 @@ Setup the following resources in the IBM MQ queue manager:
     </jmsQueue>
     ```
 
-1. Add a JMS activation spec to the server.xml to define our MDB that will be invoked from the MDB queue. 
+1. Add a JMS activation spec to the server.xml to define the MDB that will be invoked from the MDB queue. Replace `<port>` and `<queueManager>`.
 
     ```xml
     <jmsActivationSpec id="mySimpleJMSEAR/mySimpleJMSMDB/MySimpleMDB">
         <properties.wmqJms channel="WAS.JMS.SVRCONN"
             destinationRef="jms/mdbq"
             destinationType="javax.jms.Queue"
-            port="<your port>"
-            queueManager="<your queue manager>"
+            port="<port>"
+            queueManager="<queueManager>"
             transportType="CLIENT" />
     </jmsActivationSpec>
     ```
 
     The jmsActivationSpec must be in the format of application name/module name/bean name, and is output in the Liberty messages.log in the following CNTR0180I message:
-`[6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification`
-
-    The `hostName` and `port` and `queueManager` properties in each of these elements should be set based on your local MQ configuration.
     
-    The `transportType` property must be set to `CLIENT`.
+    ```
+    [6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification
+    ```
 
-1. Optinally define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute RECOVERY(YES) if you want to make the MDB test transactional.
+1. Optinally define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
 
 ### Deploy the sample into CICS
 
@@ -126,7 +124,7 @@ Setup the following resources in the IBM MQ queue manager:
 
 ## Reference
 
-*  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the MQ Knowledge Center
+*  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the IBM MQ Knowledge Center
 *  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html) in the Liberty Knowledge Center
 *  [Defining MDB queues as shareable](http://www-01.ibm.com/support/docview.wss?uid=swg21232930) for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
 *  [Getting to grips with JCICS](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/) in the CICS Developer Center
@@ -134,6 +132,3 @@ Setup the following resources in the IBM MQ queue manager:
 ## License
 
 This project is licensed under [Apache License Version 2.0](LICENSE).
-
-
-
