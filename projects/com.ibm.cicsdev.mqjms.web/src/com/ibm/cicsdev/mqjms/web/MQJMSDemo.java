@@ -20,10 +20,11 @@ import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
+import javax.jms.Message;
 import javax.jms.JMSConsumer;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
-
+import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
@@ -50,7 +51,7 @@ public class MQJMSDemo extends HttpServlet {
 	private static final String CCSID = System.getProperty("com.ibm.cics.jvmserver.local.ccsid");
 
 	/** loop count for read of queue */
-	private static final int READ_COUNT = 10;
+	private static final int QM_DEPTH_COUNT = 10;
 
 	/** name of the JMS connection factory */
 	private static final String JMS_CF1 = "jms/qcf1";
@@ -67,7 +68,7 @@ public class MQJMSDemo extends HttpServlet {
 	/** JMS queue for CF tests */
 	private static Queue simpleq;
 
-	/** JMS Queue object for MDB test */
+	/** JMS queue  for MDB test */
 	private static Queue mdbq;
 
 	/** Time format */
@@ -77,7 +78,7 @@ public class MQJMSDemo extends HttpServlet {
 	private static final String TSQNAME = "RJMSTSQ";
 
 	/** Maximum TSQ read depth */
-	private static final int DEPTH_COUNT = 100;
+	private static final int TS_DEPTH_COUNT = 100;
 
 	/**
 	 * Servlet initialisation method called only on initialisation of web app
@@ -121,7 +122,7 @@ public class MQJMSDemo extends HttpServlet {
 		// Initialise variables;
 		PrintWriter pw = response.getWriter();
 
-		// Get test param from HTTP request to determine with test to run
+		// Get test param from HTTP request to determine which test to run
 		String test = request.getParameter("test");
 		if (test != null) {
 
@@ -147,7 +148,7 @@ public class MQJMSDemo extends HttpServlet {
 	}
 
 	/**
-	 * Read a JMS queue and construct a HTTP response
+	 * Read a JMS queue and construct an HTTP response
 	 *
 	 * @param request
 	 *            - HTTP request
@@ -175,7 +176,7 @@ public class MQJMSDemo extends HttpServlet {
 			printWeb(pw, webmsg);
 
 			String txtmsg;
-			for (int i = 0; i < READ_COUNT; i++) {
+			for (int i = 0; i < QM_DEPTH_COUNT; i++) {
 				txtmsg = consumer.receiveBodyNoWait(String.class);
 				if (txtmsg != null) {
 					webmsg = "Record[" + i + "] " + txtmsg;
@@ -185,10 +186,12 @@ public class MQJMSDemo extends HttpServlet {
 				}
 			}
 		} catch (JMSRuntimeException | JMSException jre) {
-			webmsg = "ERROR on JMS receive" + jre.getMessage();
+			webmsg = "ERROR on JMS receive " + jre.getMessage();
 			throw new ServletException(webmsg, jre);
 		}
 	}
+	
+
 
 	/**
 	 * Write to a JMS queue and construct an HTTP response
@@ -215,6 +218,7 @@ public class MQJMSDemo extends HttpServlet {
 			// Producer allows message delivery options and headers to be set
 			JMSProducer producer = context.createProducer();
 			producer.send(simpleq, cicsmsg);
+			producer.setProperty("TSQNAME", TSQNAME);
 
 			// Log message back to browser
 			String title = "Message has been written to " + simpleq.getQueueName();
@@ -277,7 +281,7 @@ public class MQJMSDemo extends HttpServlet {
 	}
 
 	/**
-	 * Read the TSQ written to by the MDB and construct a HTTP response
+	 * Read the TSQ written to by the MDB and construct an HTTP response
 	 *
 	 * @param request
 	 *            - HTTP request
@@ -305,7 +309,7 @@ public class MQJMSDemo extends HttpServlet {
 			printWeb(pw, webmsg);
 
 			// Read through the TSQ records until get an ItemError
-			for (int i = 1; i <= DEPTH_COUNT; i++) {
+			for (int i = 1; i < TS_DEPTH_COUNT; i++) {
 
 				tsqQ.readItem(i, holder);
 				byte[] data = holder.getValue();
