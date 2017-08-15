@@ -100,7 +100,7 @@ Setup the following resources in the CICS region
 
 1. Using the CICS Explorer, export the com.ibm.cicsdev.mqjms.cf.cicsbundle project to a zFS directory
 
-1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 10, and ensure all resources are enabled
+1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 8, and ensure all resources are enabled
 
 
 Running the sample
@@ -110,7 +110,7 @@ Running the sample
 
 ```set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>```
 
-* Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line. 
+* Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance:
 ```amqsputc DEMO.MDBQUEUE```
 
 * To verify that the MDB has been triggered, you can read the contents of the CICS TSQ RJMSTSQ using the CICS CEBR transaction.
@@ -120,6 +120,8 @@ Running the sample
 
 
 ### To deploy the Connection Factory sample 
+
+Add the following additional resources:
 
 1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` and `localhost`.
 
@@ -147,7 +149,7 @@ Running the sample
 Running the sample
 
 
-* The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the simple JMS queue specify the test=putQ parameter after the context root for example: [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putq)
+* The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the DEMO.SIMPLEQ specify the test=putQ parameter after the context root for example: [http://host:port/jmsweb?test=putQ](http://host:port/jmsweb?test=putq)
 
     If the test is successful, you will see the following response written to the browser:
     `22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
