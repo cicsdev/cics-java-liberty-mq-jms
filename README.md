@@ -1,6 +1,6 @@
 cics-java-liberty-mq-jms
 ================
-Sample JMS Java EE web application demonstrating how to use a JMS Connection Factory and a message-driven bean (MDB) to get and put messages using an MQ client mode connection to a remote MQ queue manager.
+Sample JMS Java EE web application demonstrating how to use a message-driven bean (MDB) and a JMS Connection Factory to get and put messages using an MQ client mode connection to a remote MQ queue manager.
 
 ## Repository structure
 
