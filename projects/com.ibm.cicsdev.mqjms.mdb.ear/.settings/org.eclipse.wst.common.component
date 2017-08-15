@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="com.ibm.cicsdev.mqjms.mdb.ear">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="com.ibm.cicsdev.mqjms.mdb.jar" deploy-path="/" handle="module:/resource/com.ibm.cicsdev.mqjms.mdb/com.ibm.cicsdev.mqjms.mdb">
+            <dependent-object>Module_1502811421829</dependent-object>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>com.ibm.cicsdev.mqjms.ear</name>
+	<name>com.ibm.cicsdev.mqjms.cf.ear</name>
 	<comment></comment>
 	<projects>
 		<project>com.ibm.cicsdev.mqjms.mdb</project>
-		<project>com.ibm.cicsdev.mqjms.web</project>
+		<project>com.ibm.cicsdev.mqjms.cf.web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
