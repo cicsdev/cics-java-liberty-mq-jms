@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>com.ibm.cicsdev.mqjms.cicsbundle</name>
+	<name>com.ibm.cicsdev.mqjms.mdb.cicsbundle</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,19 +10,16 @@
 			<arguments>
 				<dictionary>
 					<key>bundleID</key>
-					<value>com.ibm.cicsdev.mqjms.cicsbundle</value>
+					<value>com.ibm.cicsdev.mqjms.mdb.cicsbundle</value>
 				</dictionary>
 				<dictionary>
 					<key>majorVersion</key>
-					<value></value>
 				</dictionary>
 				<dictionary>
 					<key>microVersion</key>
-					<value></value>
 				</dictionary>
 				<dictionary>
 					<key>minorVersion</key>
-					<value></value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
