@@ -1,6 +1,6 @@
 cics-java-liberty-mq-jms
 ================
-Sample JMS Java EE web application demonstrating how to use a message-driven bean (MDB) and a JMS Connection Factory to get and put messages using an MQ client mode connection to a remote MQ queue manager.
+Sample JMS Java EE web application demonstrating how to use a message-driven bean (MDB) and a JMS Connection Factory to connect to a remote IBM MQ queue manager using an MQ client mode connection.
 
 ## Repository structure
 
@@ -26,14 +26,13 @@ Sample JMS Java EE web application demonstrating how to use a message-driven bea
 
 ## Configuration
 
-The two samples code can be deployed into a CICS Liberty JVM server. The MySimpleMDB will receive a JMS message written to an MQ queue and then write this message to a CICS TSQ queue.
-The MQJMSDemo servlet can then be used to get and put messages to the defined queues using an MQ client mode connection to a remote queue manager. 
+The two samples projects can be deployed into a CICS Liberty JVM server. The MySimpleMDB will receive a JMS message written to an MQ queue and then write this message to a CICS TSQ queue.
+The MQJMSDemo servlet can be used to get and put messages to the defined queues using an MQ client mode connection to a remote queue manager. 
 
 ### Import the samples into Eclipse
 
 1. Import the projects into CICS Explorer using **File > Import > General > Existing projects into workspace**.
 1. Resolve the build path errors on the Web and EJB projects using the following menu from each project: **Build Path > Configure Build Path > Libraries > Add Library > CICS with Java EE and Liberty** and select the version of CICS TS for deployment.
-
 
 
 
