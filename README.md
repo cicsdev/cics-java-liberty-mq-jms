@@ -9,9 +9,9 @@ Sample JMS Java EE web application demonstrating how to use a message-driven bea
 ## Samples overview
 
 
-* `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references the web project for the connection factory sample for deployment to CICS
-* `com.ibm.cicsdev.mqjms.cf.web` - Dynamic web project containing the MQJMSDemo servlet that uses JMS to get and put messages to the queues
-* `com.ibm.cicsdev.mqjms.mdb.cicsbundle` - CICS bundle project that references the EAR project for the MDB sample for deployment to CICS
+* `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references the web project for the connection factory sample
+* `com.ibm.cicsdev.mqjms.cf.web` - Web project containing the MQJMSDemo servlet that uses a JMS connection factory 
+* `com.ibm.cicsdev.mqjms.mdb.cicsbundle` - CICS bundle project that references the EAR project for the MDB sample
 * `com.ibm.cicsdev.mqjms.mdb` - EJB project containing the MySimpleMDB that recives a message put to the MDB queue
 * `com.ibm.cicsdev.mqjms.mdb.ear` - EAR project referring to the MDB EJB project
 
