@@ -5,6 +5,7 @@ Sample JMS Java EE web application demonstrating how to use a message-driven bea
 ## Repository structure
 
 * [projects/](projects) - Eclipse projects suitable for importing into a CICS Explorer environment
+* [etc/](etc) - Liberty server configuration file
 
 ## Samples overview
 
@@ -18,7 +19,7 @@ Sample JMS Java EE web application demonstrating how to use a message-driven bea
 
 ## Requirements
 
-* IBM CICS TS V5.3 with APAR [PI58375](http://www-01.ibm.com/support/docview.wss?uid=swg1PI58375) and [PI67640](http://www-01.ibm.com/support/docview.wss?uid=swg1PI67640), or CICS TS V5.4
+* IBM CICS TS V5.3 with APAR [PI58375](http://www.ibm.com/support/docview.wss?uid=swg1PI58375) and [PI67640](http://www.ibm.com/support/docview.wss?uid=swg1PI67640), or CICS TS V5.4
 * IBM MQ V8.0 or later on z/OS
 * IBM MQ Resource Adapter version 9.0.1. Download from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
 * IBM CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed. Download from [IBM Mainframe DEV](https://developer.ibm.com/mainframe/products/downloads)
@@ -175,7 +176,7 @@ Running the sample
 
 *  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the IBM MQ Knowledge Center
 *  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html) in the Liberty Knowledge Center
-*  [Defining MDB queues as shareable](http://www-01.ibm.com/support/docview.wss?uid=swg21232930) for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
+*  [Defining MDB queues as shareable](http://www.ibm.com/support/docview.wss?uid=swg21232930) for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
 *  [Getting to grips with JCICS](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/) in the CICS Developer Center
 
 ## License

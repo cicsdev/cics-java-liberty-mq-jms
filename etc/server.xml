@@ -1,0 +1,36 @@
+<server description="MQ JMS Liberty sample">
+   <featureManager>
+        <feature>cicsts:core-1.0</feature>       
+		<feature>wmqJmsClient-2.0</feature>	
+		<feature>mdb-3.2</feature>		
+		<feature>jndi-1.0</feature> 
+    </featureManager>        
+  
+    <variable name="wmqJmsClient.rar.location" value="<path>wmq.jmsra.rar"/>
+    
+    <jmsQueueConnectionFactory connectionManagerRef="ConMgrJms" jndiname="jms/qcf1">
+        <properties.wmqJms channel="WAS.JMS.SVRCONN" 
+                           hostName="localhost" 
+                           port="<port>"
+                           queueManager="<QM>" 
+                           transportType="CLIENT"/>
+    </jmsQueueConnectionFactory>
+    <connectionManager id="ConMgrJms" maxPoolSize="20"/> 
+    	
+	<jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
+		<properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
+		    channel="WAS.JMS.SVRCONN"
+		    hostName="localhost"
+			port="<port>"
+			queueManager="QM2C"			 
+			transportType="CLIENT" />
+	</jmsActivationSpec>
+
+	<jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
+		<properties.wmqJms 	baseQueueName="DEMO.SIMPLEQ" />
+	</jmsQueue>
+
+	<jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
+		<properties.wmqJms 	baseQueueName="DEMO.MDBQUEUE" />
+	</jmsQueue>  
+</server>
