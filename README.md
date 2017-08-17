@@ -124,6 +124,8 @@ Running the sample
 
 Add the following additional resources:
 
+1. Define an MQ queue named `DEMO.MDBQUEUE`. This should also be defined as shareable to allow useage from multiple servlet threads. 
+
 1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` and `localhost`.
 
     ```xml
