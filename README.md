@@ -80,8 +80,8 @@ Setup the following resources in the CICS region
     ```xml
 	<jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
 		<properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
-		    channel="WAS.JMS.SVRCONN"
-		    hostName="localhost"
+                    channel="WAS.JMS.SVRCONN"
+                    hostName="localhost"
                     port="<port>"
                     queueManager="<queue_manager>"			 
                     transportType="CLIENT" />
