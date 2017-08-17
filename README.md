@@ -75,23 +75,24 @@ Setup the following resources in the CICS region
     </jmsQueue>
     ```
 
-1. Add a JMS activation spec to the server.xml for the MDB test. This defines that our MySimpleMDB is invoked when the MDBQUEUE is written to. Replace `<port>` and `<queueManager>`.
+1. Add a JMS activation spec to the server.xml for the MDB test. This defines that the MySimpleMDB is invoked when the MDBQUEUE is written to. Replace `<port>` and `<queue_manager>`.
 
     ```xml
-    <jmsActivationSpec id="mySimpleJMSEAR/mySimpleJMSMDB/MySimpleMDB">
-        <properties.wmqJms channel="WAS.JMS.SVRCONN"
-            destinationRef="jms/mdbq"
-            destinationType="javax.jms.Queue"
-            port="<port>"
-            queueManager="<queueManager>"
-            transportType="CLIENT" />
-    </jmsActivationSpec>
+	<jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
+		<properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
+		    channel="WAS.JMS.SVRCONN"
+		    hostName="localhost"
+                    port="<port>"
+                    queueManager="<queue_manager>"			 
+                    transportType="CLIENT" />
+	</jmsActivationSpec>
     ```
 
-    The jmsActivationSpec must be in the format of application name/module name/bean name, and is output in the Liberty messages.log in the following CNTR0180I message:
+    The jmsActivationSpec id attribute must be in the format of application name/module name/bean name, and is output in the Liberty messages.log in the following CNTR0180I message:
     
     ```
-    [6/21/17 10:42:46:223 BST] 00000076 com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the mySimpleJMSMDB.jar module of the mySimpleJMSEAR application is bound to the com.ibm.cicsdev.mqjms.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification
+    [8/16/17 15:42:47:611 BST] 0000004b com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the com.ibm.cicsdev.mqjms.mdb.jar module of the com.ibm.cicsdev.mqjms.mdb.ear application is bound to the com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification.
+
     ```
 
 1. Optinally define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
@@ -126,12 +127,12 @@ Add the following additional resources:
 1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` and `localhost`.
 
     ```xml
-    <jmsQueueConnectionFactory connectionManagerRef="ConMgr" jndiname="jms/qcf1">
-        <properties.wmqJms channel="WAS.JMS.SVRCONN"
-            hostName="localhost"
-            port="<port>"
-            queueManager="<queueManager>"
-            transportType="CLIENT"/>
+    <jmsQueueConnectionFactory connectionManagerRef="ConMgrJms" jndiname="jms/qcf1">
+        <properties.wmqJms channel="WAS.JMS.SVRCONN" 
+                           hostName="localhost" 
+                           port="<port>"
+                           queueManager="<queue_manager>" 
+                           transportType="CLIENT"/>
     </jmsQueueConnectionFactory>
     
     <connectionManager id="ConMgr" maxPoolSize="10"/>
