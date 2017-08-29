@@ -108,10 +108,11 @@ Running the sample
 
 
 * To write records to the MDB queue you can use the IBM MQ client sample program `amqsputc`. To use this sample set the MQSERVER variable to the name of the channel, and TCP/IP hostname and port
-
+  
 ```set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>```
 
 * Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance:
+
 ```amqsputc DEMO.MDBQUEUE```
 
 * To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the CICS CEBR transaction.
