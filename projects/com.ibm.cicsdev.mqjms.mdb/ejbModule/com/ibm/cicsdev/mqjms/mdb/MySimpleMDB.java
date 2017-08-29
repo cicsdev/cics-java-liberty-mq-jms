@@ -31,7 +31,6 @@ import com.ibm.cics.server.TSQ;
 /**
  * Message-Driven Bean implementation class for MySimpleMDB
  * 
- * 
  * The <jmsActivationSpec id> attribute must match the format of
  * application_name/module_name/bean_name when this app is deployed
  */
@@ -42,7 +41,7 @@ public class MySimpleMDB implements MessageListener {
 
 	/** Time format */
 	static SimpleDateFormat dfTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
+
 	/** Default CICS TSQ that will be written to */
 	private static final String TSQNAME = "RJMSTSQ";
 
@@ -53,29 +52,30 @@ public class MySimpleMDB implements MessageListener {
 	}
 
 	/**
-	 * The onMessage() method is invoked by the EJB container when the queue receives a msg 
-	 * Set TransactionAttributeType.REQUIRED to make updates via the CICS UOW controlled
-	 * by the EJB container managed transaction with JTA.
+	 * The onMessage() method is invoked by the EJB container when the queue
+	 * receives a JMS msg. 
+	 * Set TransactionAttributeType.REQUIRED to make updates via the CICS UOW
+	 * controlled by the EJB container managed transaction with JTA.
 	 * 
-	 * @param jmsmsg
+	 * @param message
 	 *            - The incoming JMS message
-	 *            	 
+	 * 
 	 * @throws RuntimeException
 	 *             - if an error occurs.
 	 */
 	@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
-	public void onMessage(Message jmsmsg) {
+	public void onMessage(Message message) {
 
 		// Initialise variables
 		String msgErr;
 		String TSQname;
 		String msgBody;
-		String q;		
+		String q;
 
 		try {
 
-			// Get JMS destination header 			
-			Destination jmsDestination = jmsmsg.getJMSDestination();
+			// Get JMS destination header
+			Destination jmsDestination = message.getJMSDestination();
 
 			// Get incoming queue name from destination header
 			if (jmsDestination != null) {
@@ -91,7 +91,7 @@ public class MySimpleMDB implements MessageListener {
 
 		try {
 			// Get message property header and use this to set TSQ name if available
-			TSQname = jmsmsg.getStringProperty("TSQNAME");
+			TSQname = message.getStringProperty("TSQNAME");
 			if (TSQname == null) {
 				TSQname = TSQNAME;
 			}
@@ -103,14 +103,15 @@ public class MySimpleMDB implements MessageListener {
 
 		// Get msg body from the JMS message object
 		try {
-			msgBody = jmsmsg.getBody(String.class);
+			msgBody = message.getBody(String.class);
 		} catch (JMSRuntimeException | JMSException e) {
 			msgErr = " ERROR: JMS error reading mesage body";
 			throw new RuntimeException(msgErr, e);
 		}
 
 		try {
-			// Construct the TSQ object based on the value from the message property
+			// Construct the TSQ object based on the value from the message
+			// property
 			TSQ tsqQ = new TSQ();
 			tsqQ.setName(TSQname);
 

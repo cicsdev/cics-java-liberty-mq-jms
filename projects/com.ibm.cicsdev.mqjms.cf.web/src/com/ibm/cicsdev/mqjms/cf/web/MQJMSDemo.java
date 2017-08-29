@@ -50,7 +50,7 @@ public class MQJMSDemo extends HttpServlet {
 	private static final String CCSID = System.getProperty("com.ibm.cics.jvmserver.local.ccsid");
 
 	/** loop count for read of queue */
-	private static final int QM_DEPTH_COUNT = 10;
+	private static final int QM_MAX_DEPTH_COUNT = 10;
 
 	/** name of the JMS connection factory */
 	private static final String JMS_CF1 = "jms/qcf1";
@@ -175,7 +175,7 @@ public class MQJMSDemo extends HttpServlet {
 			printWeb(pw, webmsg);
 
 			String txtmsg;
-			for (int i = 0; i < QM_DEPTH_COUNT; i++) {
+			for (int i = 0; i < QM_MAX_DEPTH_COUNT; i++) {
 				txtmsg = consumer.receiveBodyNoWait(String.class);
 				if (txtmsg != null) {
 					webmsg = "Record[" + i + "] " + txtmsg;
@@ -216,13 +216,14 @@ public class MQJMSDemo extends HttpServlet {
 
 			// Producer allows message delivery options and headers to be set
 			JMSProducer producer = context.createProducer();
+			
+			// write message to the queue
 			producer.send(simpleq, cicsmsg);
-			producer.setProperty("TSQNAME", TSQNAME);
 
 			// Log message back to browser
 			String title = "Message has been written to " + simpleq.getQueueName();
 			printWeb(pw, title);
-
+			
 		} catch (JMSException | JMSRuntimeException jre) {
 			webmsg = "ERROR on JMS send " + jre.getMessage();
 			throw new ServletException(webmsg, jre);
