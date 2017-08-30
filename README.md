@@ -135,8 +135,6 @@ queue browsing transaction. The test data should then be visible as follows:
                                                                                 
                                                                                 
                                                                                 
-                                                                                
-                                                                                
  PF1 : HELP                PF2 : SWITCH HEX/CHAR     PF3 : TERMINATE BROWSE     
  PF4 : VIEW TOP            PF5 : VIEW BOTTOM         PF6 : REPEAT LAST FIND     
  PF7 : SCROLL BACK HALF    PF8 : SCROLL FORWARD HALF PF9 : UNDEFINED            
