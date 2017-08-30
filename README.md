@@ -99,6 +99,7 @@ Setup the following resources in the CICS region
 
 1. Optionally, change the name of the JVMSERVER in the .warbundle file in the com.ibm.cicsdev.mqjms.cf.cicsbundle project from DFHWLP to the name of the JVMSERVER resource defined in CICS
 
+1. Using the CICS Explorer, export the **com.ibm.cicsdev.mqjms.cf.cicsbundle** project to a zFS directory
 
 1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 8, and ensure all resources are enabled
 
@@ -108,21 +109,17 @@ Running the sample
 
 * To write records to the MDB queue you can use the IBM MQ client sample program `amqsputc`. To use this sample set the MQSERVER variable to the name of the channel, and TCP/IP hostname and port
   
-```
-> set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>
-```
+```> set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>```
 
 * Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance:
 
-```
-> amqsputc DEMO.MDBQUEUE
+```> amqsputc DEMO.MDBQUEUE
 > Sample AMQSPUT0 start
 > target queue is DEMO.MDBQUEUE
-> hello from CICS
+> hello from CICS```
 
-```
-
-* To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the CICS CEBR transaction, for example:
+* To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the command 'CEBR RJMSTSQ' to view the contents with the CICS
+queue browsing transaction. The test data should then be visible as follows:
 
 ```
   CEBR  TSQ RJMSTSQ          SYSID Z32E REC     1 OF     1    COL     1 OF    47
