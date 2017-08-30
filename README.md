@@ -182,7 +182,7 @@ Running the sample
  [http://host:port/jmsweb?test=putq](http://host:port/jmsweb?test=putq)
 
     If the test is successful, you will see the following response written to the browser: 
-    `22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
+    ```22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ```
 
 * To read the records back specify the *readQ* parameter: 
  [http://host:port/jmsweb?test=readq](http://host:port/jmsweb?test=readq)
