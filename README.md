@@ -116,10 +116,10 @@ Running the sample
 ```> amqsputc DEMO.MDBQUEUE
 > Sample AMQSPUT0 start
 > target queue is DEMO.MDBQUEUE
-> hello from CICS```
+> hello from CICS ```
 
 * To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the command 'CEBR RJMSTSQ' to view the contents with the CICS
-queue browsing transaction. The test data should then be visible as follows:
+TSQ browsing transaction. The test data should then be visible as follows:
 
 ```
   CEBR  TSQ RJMSTSQ          SYSID Z32E REC     1 OF     1    COL     1 OF    47
