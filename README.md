@@ -181,7 +181,7 @@ Running the sample
 * The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the DEMO.SIMPLEQ specify the test=putq parameter after the context root for example: 
  [http://host:port/jmsweb?test=putq](http://host:port/jmsweb?test=putq)
 
-    If the test is successful, you will see the following response written to the browser:
+    If the test is successful, you will see the following response written to the browser: 
     `22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
 
 * To read the records back specify the *readQ* parameter: 
