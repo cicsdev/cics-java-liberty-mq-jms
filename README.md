@@ -111,7 +111,7 @@ Running the sample
   
 ```> set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>```
 
-* Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance:
+* Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance: 
 
 ```
 > amqsputc DEMO.MDBQUEUE
