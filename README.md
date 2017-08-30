@@ -113,12 +113,14 @@ Running the sample
 
 * Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance:
 
-```> amqsputc DEMO.MDBQUEUE
+```
+> amqsputc DEMO.MDBQUEUE
 > Sample AMQSPUT0 start
 > target queue is DEMO.MDBQUEUE
-> hello from CICS ```
+> hello from CICS
+```
 
-* To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the command 'CEBR RJMSTSQ' to view the contents with the CICS
+* To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the command `CEBR RJMSTSQ` to view the contents with the CICS
 TSQ browsing transaction. The test data should then be visible as follows:
 
 ```
