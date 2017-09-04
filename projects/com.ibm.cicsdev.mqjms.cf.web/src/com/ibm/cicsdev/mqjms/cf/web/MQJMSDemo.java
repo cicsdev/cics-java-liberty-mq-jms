@@ -124,7 +124,6 @@ public class MQJMSDemo extends HttpServlet {
 		// Get test param from HTTP request to determine which test to run
 		String test = request.getParameter("test");
 		if (test != null) {
-
 			if (test.equalsIgnoreCase("readq")) {
 				readQ(request, response);
 			} else if (test.equalsIgnoreCase("putq")) {
@@ -141,9 +140,7 @@ public class MQJMSDemo extends HttpServlet {
 
 		} else {
 			printWeb(pw, "No test param specified: ");
-
 		}
-
 	}
 
 	/**
@@ -171,14 +168,14 @@ public class MQJMSDemo extends HttpServlet {
 			JMSConsumer consumer = context.createConsumer(simpleq);
 
 			// Read messages from the queue until it is empty or we hit READ_COUNT
-			webmsg = "Records read from " + simpleq.getQueueName() + " are as follows:";
+			webmsg = "Messages read from " + simpleq.getQueueName() + " are as follows:";
 			printWeb(pw, webmsg);
 
 			String txtmsg;
 			for (int i = 0; i < QM_MAX_DEPTH_COUNT; i++) {
 				txtmsg = consumer.receiveBodyNoWait(String.class);
 				if (txtmsg != null) {
-					webmsg = "Record[" + i + "] " + txtmsg;
+					webmsg = "Message[" + i + "] " + txtmsg;
 					printWeb(pw, webmsg);
 				} else {
 					break;
@@ -189,8 +186,6 @@ public class MQJMSDemo extends HttpServlet {
 			throw new ServletException(webmsg, jre);
 		}
 	}
-	
-
 
 	/**
 	 * Write to a JMS queue and construct an HTTP response
@@ -331,7 +326,6 @@ public class MQJMSDemo extends HttpServlet {
 			webmsg = "ERROR reading string data with encoding (" + CCSID + ")";
 			throw new ServletException(webmsg, e);
 		}
-
 	}
 
 	/**

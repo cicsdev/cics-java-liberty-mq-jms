@@ -80,9 +80,9 @@ public class MySimpleMDB implements MessageListener {
 			// Get incoming queue name from destination header
 			if (jmsDestination != null) {
 				q = ((Queue) jmsDestination).getQueueName();
-				System.out.println(formatTime() + " JMS message received from MDB " + q);
+				System.out.println(formatTime() + " JMS message received by MDB from queue: " + q);
 			} else {
-				System.out.println(formatTime() + " MQ message received from MDB ");
+				System.out.println(formatTime() + " MQ message received by MDB ");
 			}
 		} catch (JMSRuntimeException | JMSException e) {
 			msgErr = " ERROR: JMS error getting destination: " + e.getLocalizedMessage();
@@ -117,10 +117,10 @@ public class MySimpleMDB implements MessageListener {
 
 			// Write the JMS message contents back to the CICS TSQ
 			tsqQ.writeString(msgBody);
-			System.out.println(formatTime() + " Message written to CICS TSQ: " + TSQname);
+			System.out.println(formatTime() + " Message written to CICS TSQ: " + TSQname);			
 
 		} catch (CicsConditionException e) {
-			msgErr = " ERROR: Failure during CICS TSQ I/O ";
+			msgErr = " ERROR: Failure during CICS TSQ write ";
 			throw new RuntimeException(msgErr);
 		}
 	}
