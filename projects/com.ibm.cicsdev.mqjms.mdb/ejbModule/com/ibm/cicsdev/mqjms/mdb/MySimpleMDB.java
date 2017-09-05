@@ -82,7 +82,7 @@ public class MySimpleMDB implements MessageListener {
 				q = ((Queue) jmsDestination).getQueueName();
 				System.out.println(formatTime() + " JMS message received by MDB from queue: " + q);
 			} else {
-				System.out.println(formatTime() + " MQ message received by MDB ");
+				System.out.println(formatTime() + " MQ API message received by MDB ");
 			}
 		} catch (JMSRuntimeException | JMSException e) {
 			msgErr = " ERROR: JMS error getting destination: " + e.getLocalizedMessage();
@@ -110,8 +110,7 @@ public class MySimpleMDB implements MessageListener {
 		}
 
 		try {
-			// Construct the TSQ object based on the value from the message
-			// property
+			// Set TSQ name based on the value from the message property
 			TSQ tsqQ = new TSQ();
 			tsqQ.setName(TSQname);
 
