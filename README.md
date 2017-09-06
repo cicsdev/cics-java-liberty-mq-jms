@@ -46,8 +46,8 @@ Setup the following resources in the IBM MQ queue manager:
 1. MQ queue named `DEMO.MDBQUEUE`
 
 Note the MDBQUEUE must be defined as shareable to allow usage in the multi-threaded environment in Liberty. In addition it is advisable to set the 
-[BackoutThreshold](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q032280_.htm) attribute on the MDBQUEUE to a finite value, to prevent the MDB looping 
-if reading poison messages. 
+[BackoutThreshold](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q032280_.htm) attribute on the MDBQUEUE to a finite value, 
+to prevent the MDB being constantly redriven if the MDB fails during the processing of the message 
 
 Setup the following resources in the CICS region
 
@@ -95,13 +95,13 @@ Setup the following resources in the CICS region
 
     ```
 
-1. Optinally define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
+1. Optinally, define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
 
-1. Optionally, change the name of the JVMSERVER in the .warbundle file in the com.ibm.cicsdev.mqjms.cf.cicsbundle project from DFHWLP to the name of the JVMSERVER resource defined in CICS
+1. Optionally, change the name of the JVMSERVER in the .warbundle file in the com.ibm.cicsdev.mqjms.cf.cicsbundle project from DFHWLP to the name of the JVMSERVER resource defined in CICS.
 
-1. Using the CICS Explorer, export the **com.ibm.cicsdev.mqjms.cf.cicsbundle** project to a zFS directory
+1. Using the CICS Explorer, export the **com.ibm.cicsdev.mqjms.cf.cicsbundle** project to a zFS directory.
 
-1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 8, and ensure all resources are enabled
+1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 8, and ensure all resources are enabled.
 
 
 Running the sample
@@ -152,6 +152,13 @@ Add the following additional resources:
 
 1. Define an MQ queue named `DEMO.SIMPLEQ`. This should also be defined as shareable to allow useage from multiple servlet threads. 
 
+
+1. Ensure the following additional Liberty features are present in server.xml.
+
+    ```xml
+    <feature>jndi-1.0</feature>
+    ```
+
 1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` based on the queue manager configuration.
 
     ```xml
@@ -183,7 +190,7 @@ Running the sample
 
  If the test is successful, you will see the following response written to the browser: 
 
-    ```22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ```
+    `22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ`
 
 * To read the records back specify the *readQ* parameter: 
  [http://host:port/jmsweb?test=readq](http://host:port/jmsweb?test=readq)
