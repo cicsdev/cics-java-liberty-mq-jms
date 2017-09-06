@@ -35,8 +35,7 @@ import com.ibm.cics.server.TSQ;
  * application_name/module_name/bean_name when this app is deployed
  */
 
-@MessageDriven(activationConfig = {
-		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue") })
+@MessageDriven(activationConfig = { @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue") })
 public class MySimpleMDB implements MessageListener {
 
 	/** Time format */

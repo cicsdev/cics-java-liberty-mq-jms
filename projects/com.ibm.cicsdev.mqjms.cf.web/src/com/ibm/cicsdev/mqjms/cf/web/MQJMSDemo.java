@@ -160,7 +160,7 @@ public class MQJMSDemo extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		String webmsg;
 
-		// Connect to the QM by creating the JMS context
+		// Connect to the queue mgr by creating the JMS context
 		// context will be autoclosed due to usage in try/with
 		try (JMSContext context = qcf.createContext()) {
 
@@ -205,7 +205,7 @@ public class MQJMSDemo extends HttpServlet {
 		String cicsmsg = formatTime() + " Simple JMS message for CICS";
 		String webmsg;
 
-		// Connect to the QM by creating the JMS context
+		// Connect to the queue mgr by creating the JMS context
 		// context will be autoclosed due to usage in try/with
 		try (JMSContext context = qcf.createContext()) {
 
@@ -245,13 +245,13 @@ public class MQJMSDemo extends HttpServlet {
 		JMSContext context;
 		JMSProducer producer;
 
-		// Connect to the QM by creating the JMS context
+		// Connect to the queue mgr by creating the JMS context
 		try {
 
 			context = qcf.createContext();
 
 		} catch (JMSRuntimeException jre) {
-			webmsg = " ERROR: " + jre.getMessage() + " on connection to QM ";
+			webmsg = " ERROR: " + jre.getMessage() + " on connection to queue manager ";
 			throw new ServletException(webmsg, jre);
 		}
 
