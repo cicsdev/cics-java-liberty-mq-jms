@@ -208,10 +208,13 @@ Running the sample
 
 ## References
 
+For further details on using the JMS APIs in CICS Liberty refer to this [CICS developer center article](https://developer.ibm.com/cics/2017/09/06/developing-jms-application-cics-liberty/)
+
+For further information on JMS and IBM MQ refer to the following:
+
 *  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the IBM MQ Knowledge Center
 *  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html) in the Liberty Knowledge Center
 *  [Defining MDB queues as shareable](http://www.ibm.com/support/docview.wss?uid=swg21232930) for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
-*  [Getting to grips with JCICS](https://developer.ibm.com/cics/2017/02/27/jcics-the-java-api-for-cics/) in the CICS Developer Center
 
 ## License
 
