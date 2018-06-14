@@ -1,220 +1,277 @@
 cics-java-liberty-mq-jms
 ================
-Sample JMS Java EE web application demonstrating how to use a message-driven bean (MDB) and a JMS Connection Factory to connect to a remote IBM MQ queue manager using an MQ client mode connection.
+Contains two samples. One sample is JVM Java EE web application demonstrating 
+how to use a message-driven bean (MDB). A second sample is a JMS 
+ConnectionFactory to connect to a remote IBM MQ queue manager using an MQ 
+client mode connection.
 
 ## Repository structure
 
-* [projects/](projects) - Eclipse projects suitable for importing into a CICS Explorer environment
-* [etc/](etc) - Liberty server configuration file
+* [projects/](projects) - Eclipse projects suitable for importing into a CICS 
+                          Explorer environment
+* [etc/](etc) - Example Liberty server configuration file
 
-## Samples overview
+## Overview
 
+### MDB Sample
+* `com.ibm.cicsdev.mqjms.mdb` - EJB project containing the MySimpleMDB that 
+                                recives a message put to the MDB queue.
+* `com.ibm.cicsdev.mqjms.mdb.ear` - EAR project referring to the MDB EJB 
+                                    project.
+* `com.ibm.cicsdev.mqjms.mdb.cicsbundle` - CICS bundle project that references 
+                                           the EAR project for the MDB sample.
 
-* `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references the web project for the connection factory sample
-* `com.ibm.cicsdev.mqjms.cf.web` - Web project containing the MQJMSDemo servlet that uses a JMS connection factory 
-* `com.ibm.cicsdev.mqjms.mdb.cicsbundle` - CICS bundle project that references the EAR project for the MDB sample
-* `com.ibm.cicsdev.mqjms.mdb` - EJB project containing the MySimpleMDB that recives a message put to the MDB queue
-* `com.ibm.cicsdev.mqjms.mdb.ear` - EAR project referring to the MDB EJB project
+### Connection Factory Sample
+					  factory sample.
+* `com.ibm.cicsdev.mqjms.cf.web` - Web project containing the MQJMSDemo servlet
+                                   that uses a JMS ConnectionFactory.
+* `com.ibm.cicsdev.mqjms.cf.ear` - EAR project referring to the the web project
+                                   `com.ibm.cicsdev.mqjms.cf.web`.
+* `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references 
+                                          the web project for the connection 
 
+## Java Code
+* com.ibm.cicsdev.mqjms.mdb
+  * MySimpleMDB.java - An MDB which receives JMS messages written to the MQ 
+                       queue `DEMO.MDBQUEUE` and writes these messages to the 
+		       CICS TSQ `RJMSTSQ`.
+* com.ibm.cicsdev.mqjms.cf.web
+  * MQJMSDemo.java - A servlet can be used to get and put messages to the MQ 
+                     queue `DEMO.SIMPLEQ` using an MQ client mode connection to
+		     a remote queue manager.
 
 ## Requirements
-
-* IBM CICS TS V5.3 with APAR [PI58375](http://www.ibm.com/support/docview.wss?uid=swg1PI58375) and [PI67640](http://www.ibm.com/support/docview.wss?uid=swg1PI67640), or CICS TS V5.4
+* IBM CICS TS V5.3 with APAR 
+  [PI58375](http://www.ibm.com/support/docview.wss?uid=swg1PI58375) and 
+  [PI67640](http://www.ibm.com/support/docview.wss?uid=swg1PI67640), or 
+  CICS TS V5.4
 * IBM MQ V8.0 or later on z/OS
-* IBM MQ Resource Adapter version 9.0.1. Download from [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761) 
-* IBM CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed. Download from [IBM Mainframe DEV](https://developer.ibm.com/mainframe/products/downloads)
+* IBM CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature 
+  installed. Download from [IBM Mainframe DEV](https://developer.ibm.com/mainframe/products/downloads)
 
 
-## Configuration
-
-The two samples projects can be deployed into a CICS Liberty JVM server. The MySimpleMDB will receive a JMS message written to an MQ queue and then write this message to a CICS TSQ queue.
-The MQJMSDemo servlet can be used to get and put messages to the defined queues using an MQ client mode connection to a remote queue manager. 
-
-### Import the samples into Eclipse
-
-1. Import the projects into CICS Explorer using **File > Import > General > Existing projects into workspace**.
-1. Resolve the build path errors on the Web and EJB projects using the following menu from each project: **Build Path > Configure Build Path > Libraries > Add Library > CICS with Java EE and Liberty** and select the version of CICS TS for deployment.
-
-
-
-### To deploy the MDB sample 
-
-
+## Configuring IBM MQ
 Setup the following resources in the IBM MQ queue manager:
 
 1. MQ channel named `WAS.JMS.SVRCONN`
-1. MQ queue named `DEMO.MDBQUEUE`
+2. MQ queue named `DEMO.MDBQUEUE`. This must be defined as shareable
+3. MQ queue named `DEMO.SIMPLEQ`. This should be defined as shareable
 
-Note the MDBQUEUE must be defined as shareable to allow usage in the multi-threaded environment in Liberty. In addition it is advisable to set the 
-[BackoutThreshold](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q032280_.htm) attribute on the MDBQUEUE to a finite value, 
-to prevent the MDB being constantly redriven if the MDB fails during the processing of the message 
+**Note:** `DEMO.MDBQUEUE` *must* be defined as shareable to allow usage in the 
+multi-threaded environment in Liberty. In addition it is advisable to set the 
+[BackoutThreshold](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q032280_.htm) 
+attribute on the MDBQUEUE to a finite value, to prevent the MDB being 
+constantly redriven if the MDB fails during the processing of the message.
 
-Setup the following resources in the CICS region
+`DEMO.SIMPLEQ` *should* be defined as shareable as Liberty servlets can be 
+accessed concurrently.
 
-1. Create a Liberty JVM server as described in [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/).
 
-1. Download the MQ V9 RAR and then define the RAR location in the Liberty server.xml configuration file. Replace `<path>`.
+## Importing the samples into Eclipse
+1. Clone or download the repository
+2. Import the projects into CICS Explorer using 
+   **File > Import > General > Existing projects into workspace**.
+3. Resolve the build path errors on the Web and EJB projects using the 
+   following menu from each project: 
+   **Build Path > Configure Build Path > Libraries > Add Library > CICS with Java EE and Liberty** 
+   and select the version of CICS TS for deployment.
 
-    ```xml
-    <variable name="wmqJmsClient.rar.location" value="<path>wmq.jmsra.rar" />
-    ```
+## Configuring the IBM MQ JMS Adapter
+1. Download the MQ V9.0.1 RAR from 
+   [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761).
+2. Follow the installation instructions. This should produce the JCA resource 
+   adapter: `wmq.jmsra.rar`.
 
-1. Ensure the following Liberty features are present in server.xml.
+## Deploying the MDB sample
+To deploy the MDB sample, you will need to import the projects into CICS 
+Explorer
 
-    ```xml
-    <feature>cicsts:core-1.0</feature>
-    <feature>mdb-3.2</feature>
-    <feature>wmqJmsClient-2.0</feature>
-    ```
+1. Export the CICS bundle from Eclipse by selecting the project 
+   **`com.ibm.cicsdev.mqjms.mdb.cicsbundle` > Export Bundle Project to z/OS UNIX File System**
+2. Define and install a Liberty JVMSERVER named `DFHWLP` in the CICS region 
+   (see [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)).
+3. Specify the location of the IBM MQ Resource Adapter by adding the following 
+   entry to the server.xml file:
 
-1. Add a definition to the server.xml for the queue required by the sample.
+   ```xml
+   <variable name="wmqJmsClient.rar.location" value="/path/to/wmq/rar/wmq.jmsra.rar"/>
+   ```
 
-    ```xml    
-    <jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
-        <properties.wmqJms baseQueueName="DEMO.MDBQUEUE" />
-    </jmsQueue>
-    ```
+   where the `value` attribute specifies the absolute path to the IBM MQ 
+   Resource Adapter file, `wmq.jmsra.rar`.
 
-1. Add a JMS activation spec to the server.xml for the MDB test. This defines that the MySimpleMDB is invoked when the MDBQUEUE is written to. Replace `<port>` and `<queue_manager>`.
+4. Add the features `mdb-3.2` and `wmqJmsClient-2.0` to the `featureManager` 
+   element in the Liberty JVM server's server.xml configuration file.
+5. Add a definition to the server.xml for the queue required by the sample:
 
-    ```xml
-	<jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
-		<properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
-                    channel="WAS.JMS.SVRCONN"
-                    hostName="localhost"
-                    port="<port>"
-                    queueManager="<queue_manager>"			 
-                    transportType="CLIENT" />
-	</jmsActivationSpec>
-    ```
+   ```xml    
+   <jmsQueue id="jms/mdbq" jndiName="jms/mdbq">
+       <properties.wmqJms baseQueueName="DEMO.MDBQUEUE" />
+   </jmsQueue>
+   ```
 
-    The jmsActivationSpec id attribute must be in the format of application name/module name/bean name, and is output in the Liberty messages.log in the following CNTR0180I message:
+6. Add a JMS activation spec to the server.xml for the MDB test. This defines 
+   that the MDB `MySimpleMDB` is invoked when the MDBQUEUE is written to. 
+
+   ```xml
+   <jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
+       <properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
+                          channel="WAS.JMS.SVRCONN"
+                          hostName="localhost"
+                          port="1414"
+                          queueManager="QM1"			 
+                          transportType="CLIENT" />
+   </jmsActivationSpec>
+   ```
+
+   where the `port` attribute specifies the port the IBM MQ queue manager is 
+   running on and the `queueManager` attribute specifies the name of the IBM MQ
+   queue manager.
+
+7. Define and install a CICS BUNDLE resource definition referring to the 
+   deployed bundle directory on zFS in step 1, and ensure all resources are 
+   enabled.
+
+*Optinally*, you can define and install a CICS TSMODEL resource named `RJMSTSQ`
+with the attribute `RECOVERY(YES)` if you want to make the MDB test 
+transactional.
+
+**Note:** The jmsActivationSpec `id` attribute must match the JNDI name of the 
+MDB in the `java:global` namespace. In Liberty, EJBs are registered to the 
+`java:global`  namespace using the following scheme: `application/module/bean`.
+
+This name is displays in the Liberty servers messages.log file when the MDB is
+registered into the EJB container:
     
-    ```
-    [8/16/17 15:42:47:611 BST] 0000004b com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the com.ibm.cicsdev.mqjms.mdb.jar module of the com.ibm.cicsdev.mqjms.mdb.ear application is bound to the com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification.
-
-    ```
-
-1. Optinally, define and install a CICS TSMODEL resource named `RJMSTSQ` with the attribute `RECOVERY(YES)` if you want to make the MDB test transactional.
-
-1. Optionally, change the name of the JVMSERVER in the .warbundle file in the com.ibm.cicsdev.mqjms.cf.cicsbundle project from DFHWLP to the name of the JVMSERVER resource defined in CICS.
-
-1. Using the CICS Explorer, export the **com.ibm.cicsdev.mqjms.cf.cicsbundle** project to a zFS directory.
-
-1. Define and install a CICS BUNDLE resource definition referring to the deployed bundle directory on zFS in step 8, and ensure all resources are enabled.
+```
+[8/16/17 15:42:47:611 BST] 0000004b com.ibm.ws.ejbcontainer.runtime.AbstractEJBRuntime           I CNTR0180I: The MySimpleMDB message-driven bean in the com.ibm.cicsdev.mqjms.mdb.jar module of the com.ibm.cicsdev.mqjms.mdb.ear application is bound to the com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB activation specification.
+```
 
 
-Running the sample
+## Running the MDB sample
+1. Write a record to the IBM MQ queue `DEMO.MDBQUEUE`.
+2. Browse the contents of the TSQ `RJMSTSQ`, the record written in 
+   `DEMO.MDBQUEUE` will have been read by the MDB and written to this CICS TSQ.
 
-
-* To write records to the MDB queue you can use the IBM MQ client sample program `amqsputc`. To use this sample set the MQSERVER variable to the name of the channel, and TCP/IP hostname and port
+Records can be written using the IBM MQ client sample program `amqsputc`. To 
+use this sample set the MQSERVER variable to the name of the channel:
   
-```> set MQSERVER=WAS.JMS.SVRCONN/TCP/<hostname(port)>```
-
-* Then connect to the MDB queue and write some test data using the amqsputc from the workstation command line, for instance: 
-
-```
-> amqsputc DEMO.MDBQUEUE
-  Sample AMQSPUT0 start
-  target queue is DEMO.MDBQUEUE
-  hello from CICS
+```sh
+set MQSERVER=WAS.JMS.SVRCONN/TCP/localhost(1414)
 ```
 
-* To verify that the MDB has been triggered, you can read the contents of the TSQ RJMSTSQ using the command `CEBR RJMSTSQ` to view the contents with the CICS
-TSQ browsing transaction. The test data should then be visible as follows:
+where `localhost` is the hostname of the system the IBM MQ queue manager is 
+running on and `1414` is the TCP port the IBM MQ queue manager is listening on.
 
-```
-  CEBR  TSQ RJMSTSQ          SYSID Z32E REC     1 OF     1    COL     1 OF    47
-  ENTER COMMAND ===>                                                            
-       **************************  TOP OF QUEUE  *******************************
- 00001 29/08/2017 14:18:15 hello from CICS                          
-       *************************  BOTTOM OF QUEUE  *****************************
-                                                                                
-                                                                                
-                                                                                
-                                                                                
-                                                                                
-                                                                                
-                                                                                
-                                                                                
- PF1 : HELP                PF2 : SWITCH HEX/CHAR     PF3 : TERMINATE BROWSE     
- PF4 : VIEW TOP            PF5 : VIEW BOTTOM         PF6 : REPEAT LAST FIND     
- PF7 : SCROLL BACK HALF    PF8 : SCROLL FORWARD HALF PF9 : UNDEFINED            
- PF10: SCROLL BACK FULL    PF11: SCROLL FORWARD FULL PF12: UNDEFINED            
+Then connect to the MDB queue and write some test data using the amqsputc from 
+the workstation command line:
+
+```sh
+amqsputc DEMO.MDBQUEUE
+Sample AMQSPUT0 start
+target queue is DEMO.MDBQUEUE
+hello from CICS
 ```
 
 
+## Deploying the Connection Factory sample
+
+1. Export the CICS bundle from Eclipse by selecting the project 
+   **`com.ibm.cicsdev.mqjms.cf.cicsbundle` > Export Bundle Project to z/OS UNIX File System**
+2. Define and install a Liberty JVMSERVER named `DFHWLP` in the CICS region 
+   (see [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)).
+3. Add the features `mdb-3.2`, `wmqJmsClient-2.0` and `jndi-1.0` to the 
+   `featureManager` element in the Liberty JVM server's server.xml 
+   configuration file.
+4. Add a JMS connection factory definition to the server.xml:
+
+   ```xml
+   <jmsQueueConnectionFactory connectionManagerRef="ConMgrJms" jndiname="jms/qcf1">
+       <properties.wmqJms channel="WAS.JMS.SVRCONN" 
+                          hostName="localhost" 
+                          port="1414"
+                          queueManager="QM1" 
+                          transportType="CLIENT"/>
+   </jmsQueueConnectionFactory>
+   
+   <connectionManager id="ConMgr" maxPoolSize="10"/>
+   ```
+
+   where the `port` attribute specifies the port the IBM MQ queue manager is 
+   running on and the `queueManager` attribute specifies the name of the IBM MQ
+   queue manager.
+
+5. Add a definition to the server.xml for the queue required by the 
+   ConnectionFactory sample.
+
+   ```xml
+   <jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
+       <properties.wmqJms baseQueueName="DEMO.SIMPLEQ" />
+   </jmsQueue>    
+   ```
 
 
-### To deploy the Connection Factory sample 
+## Running the Connection Factory sample
 
-Add the following additional resources:
+1. Using a web browser, access the web application using the following URL:
+   
+   http://mvs.example.ibm.com:9080/jmsweb?test=putq
 
-1. Define an MQ queue named `DEMO.SIMPLEQ`. This should also be defined as shareable to allow useage from multiple servlet threads. 
+   where `mvs.example.ibm.com` is the hostname of the LPAR and `9080` is the 
+   HTTP port Liberty is configured to run on.
+   
+   This will write a record to the IBM MQ queue `DEMO.SIMPLEQ` and return the
+   following HTTP response:
 
+   ```
+   22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ
+   ```
+2. Using a web browser, access the web application using the following URL:
 
-1. Ensure the following additional Liberty features are present in server.xml.
+   http://mvs.example.com:9080/jmsweb?test=readq
 
-    ```xml
-    <feature>jndi-1.0</feature>
-    ```
-
-1. Add a JMS connection factory definition to the server.xml. Replace `<port>` and `<queue_manager>` based on the queue manager configuration.
-
-    ```xml
-    <jmsQueueConnectionFactory connectionManagerRef="ConMgrJms" jndiname="jms/qcf1">
-        <properties.wmqJms channel="WAS.JMS.SVRCONN" 
-                           hostName="localhost" 
-                           port="<port>"
-                           queueManager="<queue_manager>" 
-                           transportType="CLIENT"/>
-    </jmsQueueConnectionFactory>
-    
-    <connectionManager id="ConMgr" maxPoolSize="10"/>
-    ```
-
-1. Add a definition to the server.xml for the queue required by the Connection Factory sample.
-
-    ```xml
-    <jmsQueue id="jms/simpleq" jndiName="jms/simpleq">
-        <properties.wmqJms baseQueueName="DEMO.SIMPLEQ" />
-    </jmsQueue>    
-    ```
-
-
-Running the sample
-
-
-* The Web application is configured with a context root of *jmsweb* so to invoke the servlet to write records to the DEMO.SIMPLEQ specify the test=putq parameter after the context root for example: 
- [http://host:port/jmsweb?test=putq](http://host:port/jmsweb?test=putq)
-
- If the test is successful, you will see the following response written to the browser: 
-
-    22/06/2017 16:11:20 Message has been written to queue:///DEMO.SIMPLEQ
-
-* To read the records back specify the *readQ* parameter: 
- [http://host:port/jmsweb?test=readq](http://host:port/jmsweb?test=readq)
-
-* You can also use the *readtsq* test parameter on the servlet to read the contents of the CICS TSQ for the MDB test:
-  [http://host:port/jmsweb?test=readtsq](http://host:port/jmsweb?test=readtsq)
-
-* You can further use the *putmdbq* test parameter on the servlet to write records to the MDB queue rather than using amqsputc:
- [http://host:port/jmsweb?test=putmdbq](http://host:port/jmsweb?test=putmdbq) 
+   This will read a record from the IBM MQ queue `DEMO.SIMPLEQ` and return it
+   in the HTTP response.
 
 
 
+## Running Both Samples
+Both the MDB sample and the ConnectionFactory sample can be run together. The
+ConnectionFactory servlet can be used to write messages onto the queue the MDB
+is bound to.
 
+The same servlet can then be used to read records from the TSQ the MDB stores
+the messages to.
+
+1. Deploy both the ConnectionFactory and MDB samples and configure the Liberty
+   server.xml as defined in the previous sections.
+2. Using a web browser, access the web application using the following URL:
+
+   http://mvs.example.ibm.com:9080/jmsweb?test=putmdbq
+
+   where `mvs.example.ibm.com` is the hostname of the LPAR and `9080` is the 
+   HTTP port Liberty is configured to run on.
+3. The MDB should automatically read this record of the queue
+4. Using a web browser, access the web application using the following URL:
+
+   http://mvs.example.ibm.com:9080/jmsweb?test=readtsq
+
+   This should return the TSQ record writen by the MDB from the IBM MQ queue.
 
 
 ## References
 
-For further details on using the JMS APIs in CICS Liberty refer to this [CICS developer center article](https://developer.ibm.com/cics/2017/09/06/developing-jms-application-cics-liberty/)
+For further details on using the JMS APIs in CICS Liberty refer to this 
+[CICS developer center article](https://developer.ibm.com/cics/2017/09/06/developing-jms-application-cics-liberty/)
 
 For further information on JMS and IBM MQ refer to the following:
 
-*  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) in the IBM MQ Knowledge Center
-*  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html) in the Liberty Knowledge Center
-*  [Defining MDB queues as shareable](http://www.ibm.com/support/docview.wss?uid=swg21232930) for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
+*  [Liberty and the IBM MQ resource adapter](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q120040_.htm) 
+   in the IBM MQ Knowledge Center
+*  [Deploying message-driven beans to connect to IBM MQ](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdbwmq.html)
+   in the Liberty Knowledge Center
+*  [Defining MDB queues as shareable](http://www.ibm.com/support/docview.wss?uid=swg21232930) 
+   for details on the `2042 MQRC_OBJECT_IN_USE when an MDB tries to get a message`
 
 ## License
 
