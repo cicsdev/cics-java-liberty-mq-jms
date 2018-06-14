@@ -23,13 +23,13 @@ for the MDB sample to process.
                                            the EAR project for the MDB sample.
 
 ### Connection Factory Sample
-					  factory sample.
 * `com.ibm.cicsdev.mqjms.cf.web` - Web project containing the MQJMSDemo servlet
                                    that uses a JMS ConnectionFactory.
 * `com.ibm.cicsdev.mqjms.cf.ear` - EAR project referring to the the web project
                                    `com.ibm.cicsdev.mqjms.cf.web`.
 * `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references 
-                                          the web project for the connection 
+                                          the web project for the 
+					  ConnectionFactory sample.
 
 ## Java Code
 * com.ibm.cicsdev.mqjms.mdb
