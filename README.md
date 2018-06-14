@@ -3,7 +3,8 @@ cics-java-liberty-mq-jms
 Contains two samples. One sample is JVM Java EE web application demonstrating 
 how to use a message-driven bean (MDB). A second sample is a JMS 
 ConnectionFactory to connect to a remote IBM MQ queue manager using an MQ 
-client mode connection.
+client mode connection. We can also use this JMS CF sample to write a JMS message
+for the MDB sample to process.
 
 ## Repository structure
 
@@ -79,12 +80,12 @@ accessed concurrently.
 ## Configuring the IBM MQ JMS Adapter
 1. Download the MQ V9.0.1 RAR from 
    [Fix Central](http://www-01.ibm.com/support/docview.wss?uid=swg21633761).
-2. Follow the installation instructions. This should produce the JCA resource 
-   adapter: `wmq.jmsra.rar`.
+2. **Important:** Ensure you follow the installation instructions. The downloaded .jar needs additional processing to produce the JCA resource 
+   adapter: `wmq.jmsra.rar`. 
 
 ## Deploying the MDB sample
-To deploy the MDB sample, you will need to import the projects into CICS 
-Explorer
+To deploy the MDB sample you must have previously imported the projects into CICS 
+Explorer.
 
 1. Export the CICS bundle from Eclipse by selecting the project 
    **`com.ibm.cicsdev.mqjms.mdb.cicsbundle` > Export Bundle Project to z/OS UNIX File System**
@@ -126,7 +127,7 @@ Explorer
 
    where the `port` attribute specifies the port the IBM MQ queue manager is 
    running on and the `queueManager` attribute specifies the name of the IBM MQ
-   queue manager.
+   queue manager. These values will be specific to your MQ installation.
 
 7. Define and install a CICS BUNDLE resource definition referring to the 
    deployed bundle directory on zFS in step 1, and ensure all resources are 
@@ -140,7 +141,7 @@ transactional.
 MDB in the `java:global` namespace. In Liberty, EJBs are registered to the 
 `java:global`  namespace using the following scheme: `application/module/bean`.
 
-This name is displays in the Liberty servers messages.log file when the MDB is
+This name is displayed in the Liberty servers messages.log file when the MDB is
 registered into the EJB container:
     
 ```
@@ -153,8 +154,11 @@ registered into the EJB container:
 2. Browse the contents of the TSQ `RJMSTSQ`, the record written in 
    `DEMO.MDBQUEUE` will have been read by the MDB and written to this CICS TSQ.
 
-Records can be written using the IBM MQ client sample program `amqsputc`. To 
-use this sample set the MQSERVER variable to the name of the channel:
+Records can be written using the IBM MQ client sample program `amqsputc`, or by
+running the JMS servlet provided with the JMS Connection Factory part of this sample. The
+IBM MQ client samples are provided with a distributed (workstation) installation of MQ.
+
+To use the `amqsputc` sample from the workstation command line, set the MQSERVER variable to the name of the channel:
   
 ```sh
 set MQSERVER=WAS.JMS.SVRCONN/TCP/localhost(1414)
@@ -163,7 +167,7 @@ set MQSERVER=WAS.JMS.SVRCONN/TCP/localhost(1414)
 where `localhost` is the hostname of the system the IBM MQ queue manager is 
 running on and `1414` is the TCP port the IBM MQ queue manager is listening on.
 
-Then connect to the MDB queue and write some test data using the amqsputc from 
+Then connect to the MDB queue and write some test data as follows using amqsputc from 
 the workstation command line:
 
 ```sh
@@ -172,6 +176,8 @@ Sample AMQSPUT0 start
 target queue is DEMO.MDBQUEUE
 hello from CICS
 ```
+
+The next section describes how to use the JMS Connection Factory Servlet to send a message to the MDB.
 
 
 ## Deploying the Connection Factory sample
