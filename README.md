@@ -1,10 +1,11 @@
 cics-java-liberty-mq-jms
 ================
-Contains two samples. One sample is JVM Java EE web application demonstrating 
-how to use a message-driven bean (MDB). A second sample is a JMS 
-ConnectionFactory to connect to a remote IBM MQ queue manager using an MQ 
-client mode connection. We can also use this JMS CF sample to write a JMS message
-for the MDB sample to process.
+Contains two samples. One sample is a Java EE web application demonstrating how
+to use a message-driven bean (MDB). A second sample is a JMS ConnectionFactory 
+to connect to a remote IBM MQ queue manager using an MQ client mode connection.
+
+We can also use this JMS CF sample to write a JMS message for the MDB sample to
+process.
 
 ## Repository structure
 
@@ -16,7 +17,7 @@ for the MDB sample to process.
 
 ### MDB Sample
 * `com.ibm.cicsdev.mqjms.mdb` - EJB project containing the MySimpleMDB that 
-                                recives a message put to the MDB queue.
+                                receives a message put to the MDB queue.
 * `com.ibm.cicsdev.mqjms.mdb.ear` - EAR project referring to the MDB EJB 
                                     project.
 * `com.ibm.cicsdev.mqjms.mdb.cicsbundle` - CICS bundle project that references 
@@ -25,7 +26,7 @@ for the MDB sample to process.
 ### Connection Factory Sample
 * `com.ibm.cicsdev.mqjms.cf.web` - Web project containing the MQJMSDemo servlet
                                    that uses a JMS ConnectionFactory.
-* `com.ibm.cicsdev.mqjms.cf.ear` - EAR project referring to the the web project
+* `com.ibm.cicsdev.mqjms.cf.ear` - EAR project referring to the web project
                                    `com.ibm.cicsdev.mqjms.cf.web`.
 * `com.ibm.cicsdev.mqjms.cf.cicsbundle` - CICS bundle project that references 
                                           the web project for the 
@@ -59,10 +60,10 @@ Setup the following resources in the IBM MQ queue manager:
 3. MQ queue named `DEMO.SIMPLEQ`. This should be defined as shareable
 
 **Note:** `DEMO.MDBQUEUE` *must* be defined as shareable to allow usage in the 
-multi-threaded environment in Liberty. In addition it is advisable to set the 
+multi-threaded environment in Liberty. In addition, it is advisable to set the 
 [BackoutThreshold](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q032280_.htm) 
 attribute on the MDBQUEUE to a finite value, to prevent the MDB being 
-constantly redriven if the MDB fails during the processing of the message.
+constantly re-driven if the MDB fails during the processing of the message.
 
 `DEMO.SIMPLEQ` *should* be defined as shareable as Liberty servlets can be 
 accessed concurrently.
@@ -133,7 +134,7 @@ Explorer.
    deployed bundle directory on zFS in step 1, and ensure all resources are 
    enabled.
 
-*Optinally*, you can define and install a CICS TSMODEL resource named `RJMSTSQ`
+*Optionally*, you can define and install a CICS TSMODEL resource named `RJMSTSQ`
 with the attribute `RECOVERY(YES)` if you want to make the MDB test 
 transactional.
 
@@ -186,9 +187,8 @@ The next section describes how to use the JMS Connection Factory Servlet to send
    **`com.ibm.cicsdev.mqjms.cf.cicsbundle` > Export Bundle Project to z/OS UNIX File System**
 2. Define and install a Liberty JVMSERVER named `DFHWLP` in the CICS region 
    (see [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)).
-3. Add the features `mdb-3.2`, `wmqJmsClient-2.0` and `jndi-1.0` to the 
-   `featureManager` element in the Liberty JVM server's server.xml 
-   configuration file.
+3. Add the features `wmqJmsClient-2.0` and `jndi-1.0` to the `featureManager` 
+   element in the Liberty JVM server's server.xml configuration file.
 4. Add a JMS connection factory definition to the server.xml:
 
    ```xml
@@ -262,7 +262,7 @@ the messages to.
 
    http://mvs.example.ibm.com:9080/jmsweb?test=readtsq
 
-   This should return the TSQ record writen by the MDB from the IBM MQ queue.
+   This should return the TSQ record written by the MDB from the IBM MQ queue.
 
 
 ## References
