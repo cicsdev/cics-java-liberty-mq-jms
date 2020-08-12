@@ -26,7 +26,8 @@ manager. The V9 resource adapter only supports JMS 2.0, but applications
 written to the JMS 1.1 API can also be deployed into a JMS 2.0
 environment such as provided in CICS Liberty.
 
-![](blog-graphics/Slide1-768x432.png 768w)
+![](blog-graphics/Slide1-768x432.png)
+
 
 ## Using JMS in CICS with IBM MQ
 
