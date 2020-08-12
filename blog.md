@@ -26,7 +26,8 @@ manager. The V9 resource adapter only supports JMS 2.0, but applications
 written to the JMS 1.1 API can also be deployed into a JMS 2.0
 environment such as provided in CICS Liberty.
 
-![](blog-graphics//Slide1-768x432.png 768w)
+![](blog-graphics/Slide1-768x432.png)
+
 
 ## Using JMS in CICS with IBM MQ
 
@@ -111,14 +112,10 @@ public class MySimpleMDB implements MessageListener {
 }
 ```
 
-- **1.** `activationConfig` annotation `destinationType` property set to
-`"javax.jms.Queue"` signifying the use of point-to-point messaging.
-- **2.** Class implements the `javax.jms.MessageListener` interface
-marking the EJB as an MDB.
-- **7.** The EJB container will invoke the `onMessage()` method in the MDB
-each time a message arrives on the queue associated with the MDB. A
-`javax.jms.Message` object is then passed as input to the MDB for
-further processing.
+- The Class MySimpleMDB implements the `javax.jms.MessageListener` interface marking the EJB as an MDB.
+- The `activationConfig` annotation `destinationType` property is set to `"javax.jms.Queue"` signifying the use of point-to-point messaging.
+- The the `onMessage()` method in the MDB will be invoked by the EJB container each time a message arrives on the queue associated with the MDB. A
+`javax.jms.Message` object is then passed as input to the MDB for further processing.
 
 ### Message headers
 
@@ -144,18 +141,13 @@ documented
         }    
 ```
 
-- **2.** We use the `getJMSDestination()` method on the JMS message to
-obtain the Destination and then obtain the input queue name using the
+- The `getJMSDestination()` method on the JMS message is used to obtain the Destination and then obtain the input queue name using the
 `getQueueName()` method on the Destination.
-- **3-5.** The absence of the Destination is used to determine if the
-message has come from an MQ API client or a JMS application. If using an
-MQ API client then the Destination will be null.
-- **9.** The try/catch block here handles both a `JMSException` and a
-`JMSRuntimeException` from the JMS API, although only the `JMSException`
-is a mandatory checked Exception. This is a change in JMS 2.0 in that
-much of the JMS API now throws the unchecked exception
-`JMSRuntimeException` rather than the checked `JMSException` so it's
-good practice to test for both when using JMS 2.0.
+- The absence of the `Destination` is used to determine if the message has come from an MQ API client or a JMS application. If using an
+MQ API client then the Destination will be `null`.
+- The try/catch block handles both a `JMSException` and a `JMSRuntimeException` from the JMS API, although only the `JMSException`
+is a mandatory checked Exception. This is a change in JMS 2.0 in that much of the JMS API now throws the unchecked exception
+`JMSRuntimeException` rather than the checked `JMSException` so it's good practice to test for both when using JMS 2.0.
 
 ### Message properties
 Message properties consisting of a name/value pair are a standard way of
@@ -176,13 +168,10 @@ tsqQ.setName(TSQname)
 tsqQ.writeString(msgBody);
 ```
 
-- **3.** The `Message.getStringProperty()` method is used to read the
-message property named `"TSQNAME"` from the message.
-- **3-6.** The `TSQNAME` property defines the name of the CICS TSQ that is
-used to store the message body, and if not present defaults to the
+- The `Message.getStringProperty()` method is used to read the message property named `"TSQNAME"` from the message.
+- The `TSQNAME` property defines the name of the CICS TSQ that is used to store the message body, and if not present defaults to the
 static value "RJMSTSQ"
-- **7-9.** The message body is then written to the TSQ using the JCICS TSQ
-class and the `writeString()` method.
+- The message body is then written to the TSQ using the JCICS `TSQ` class and the `writeString()` method.
 
 ### Transactions
 An MDB is a type of EJB and so can use either container or bean managed
@@ -377,7 +366,7 @@ are obtained using the `createContext()` method on the connection
 factory. Connection handles should be released (closed) as soon as
 practical to ensure efficient connection pooling.
 
-**3.** A `JMSContext` is created directly from the connection factory.
+A `JMSContext` is created directly from the connection factory.
 The JMSContext interface is new in JMS 2.0 and replaces the separate
 `Connection `and `Session `objects in the JMS 1.1 API. The
 `JMSContext `implements the Java 7 `java.lang.AutoCloseable` interface.
@@ -385,14 +374,14 @@ This means that since we create the `JMSContext` in a try-with-resources
 block, the close method will be called automatically at the end of the
 block without the need to explicitly close it.
 
-**4.** `JMSProducer` is a replacement for the MessageProducer object in
+A `JMSProducer` is a replacement for the MessageProducer object in
 JMS 1.1. It allows message delivery options, headers, and properties to
 be configured. It is created using the `createProducer()` method on the
 `JMSContext`. The `putMDBQ()` method in our sample shows how to use the
 `JMSProducer` to set message properties on a JMS message using in the
 MDB test.
 
-**5.** The `JMSProducer.send()` is used passing in the JMS queue and a
+The `JMSProducer.send()` is used passing in the JMS queue and a
 String message to be written to the queue. In the JMS 2.0 API there's no
 need to create a `TextMessage` object and set its body to the specified
 string. Instead, we can simply pass the string into the `send()` method.
@@ -400,8 +389,7 @@ The JMS provider will automatically create a JMS `TextMessage` and set
 its body to the supplied string.
 
 ### Reading the queue
-The `readQ()` method in our servlet is used to read the DEMO.SIMPLEQ
-queue as shown below.
+The `readQ()` method in our servlet is used to read the DEMO.SIMPLEQ queue as shown in the snippet below. 
 
 ```java
 public void readQ(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -431,19 +419,13 @@ public void readQ(HttpServletRequest request, HttpServletResponse response) thro
 }
 ```
 
-**4.** The `JMSContext` is created in a try-with-resources block and
-obtains a connection from the underlying connection pool
+The `JMSContext` is created in a try-with-resources block and obtains a connection from the underlying connection pool
 
-**6.** When an application needs to receive messages it uses the
-`createConsumer()` method to create a `JMSConsumer` object.
+When an application needs to receive messages it uses the `createConsumer()` method to create a `JMSConsumer` object.
 
-**12-20.** The queue is read in a loop until the maximum depth count is
-exceeded or no more data is returned.
+The queue is then read in a loop until the maximum depth count is exceeded or no more data is returned.
 
-**13.** The `receiveBodyNoWait(String.class)` method is called which
-will return the JMS message body as a string, if one is immediately
-available. Note that alternative versions of this method are available
-which will block for a specified timeout period.
+The `receiveBodyNoWait(String.class)` method is called which will return the JMS message body as a string, if one is immediately available. Note that alternative versions of this method are available which will block for a specified timeout period.
 
 ### Deploying the servlet
 
@@ -521,21 +503,11 @@ Liberty JVM server, including the following topics:
 The following references provide more detailed information if you want
 to explore the subject further.
 
-Oracle technetwork -- [What New in JMS
-2.0](http://www.oracle.com/technetwork/articles/java/jms20-1947669.html)\
-CICS article -- [Using the MQ Java clases with
-CICS](https://developer.ibm.com/cics/2014/04/30/using-the-ibm-mq-classes-for-java-with-a-cics-jvm-server/)\
-CICS article -- [Using MQ JMS in an OSGi JVM
-server]https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)\
-IBM MQ Knowledge Center -- [IBM MQ Classes for JMS --
-Javadoc](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.javadoc.doc/WMQJMSClasses/com/ibm/msg/client/jms/JmsContext.html)\
-IBM MQ Knowledge Center -- [Using IBM MQ classes for
-JMS](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q031500_.htm)\
-IBM MQ Knowledge Center -- [Deploying message-driven beans within
-Liberty](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdb.html)\
-IBM CICS TS Knowledge Center -- [Using IBM MQ classes for JMS in a
-Liberty JVM
-server](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.4.0/applications/developing/java/dfhpj_webspheremq_jmsliberty.html)
+- Oracle technetwork -- [What New in JMS 2.0](http://www.oracle.com/technetwork/articles/java/jms20-1947669.html)
+- CICS article -- [Using MQ JMS in an OSGi JVM server](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)
+- IBM MQ Knowledge Center -- [IBM MQ Classes for JMS -- Javadoc](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.javadoc.doc/WMQJMSClasses/com/ibm/msg/client/jms/JmsContext.html)
+- IBM MQ Knowledge Center -- [Using IBM MQ classes for JMS](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q031500_.htm)
+- IBM MQ Knowledge Center -- [Deploying message-driven beans within Liberty](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdb.html)
+- IBM CICS TS Knowledge Center -- [Using IBM MQ classes for JMS in a Liberty JVM server](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.4.0/applications/developing/java/dfhpj_webspheremq_jmsliberty.html)
 
-With thanks to Matthew Leming and Pete Siddall of IBM MQ development and
-Andy Wharmby of CICS Development.
+With thanks to Matthew Leming and Pete Siddall of IBM MQ development and Andy Wharmby of CICS Development.
