@@ -1,10 +1,10 @@
 cics-java-liberty-mq-jms
 ================
-Contains two samples. One sample is JVM Java EE web application demonstrating 
-how to use a message-driven bean (MDB). A second sample is a JMS 
-ConnectionFactory to connect to a remote IBM MQ queue manager using an MQ 
-client mode connection. We can also use this JMS CF sample to write a JMS message
-for the MDB sample to process.
+This project contains two samples. One sample is Java EE web application demonstrating 
+how to use a message-driven bean (MDB). The second sample is a JMS 
+ConnectionFactory sample that connects to a remote IBM MQ queue manager using an MQ 
+client mode connection. This sample can also be used to write a JMS message
+for the MDB sample to process. For further details on how to develop these samples refer to the accompanying tutorial [Developing an MQ JMS application for CICS Liberty(blog.md)
 
 ## Repository structure
 
@@ -184,8 +184,7 @@ The next section describes how to use the JMS Connection Factory Servlet to send
 
 1. Export the CICS bundle from Eclipse by selecting the project 
    **`com.ibm.cicsdev.mqjms.cf.cicsbundle` > Export Bundle Project to z/OS UNIX File System**
-2. Define and install a Liberty JVMSERVER named `DFHWLP` in the CICS region 
-   (see [Starting a CICS Liberty JVM server in 4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)).
+2. Define and install a Liberty JVMSERVER named `DFHWLP` in the CICS region.
 3. Add the features `mdb-3.2`, `wmqJmsClient-2.0` and `jndi-1.0` to the 
    `featureManager` element in the Liberty JVM server's server.xml 
    configuration file.
