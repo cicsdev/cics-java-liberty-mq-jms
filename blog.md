@@ -171,7 +171,7 @@ tsqQ.writeString(msgBody);
 - The `Message.getStringProperty()` method is used to read the message property named `"TSQNAME"` from the message.
 - The `TSQNAME` property defines the name of the CICS TSQ that is used to store the message body, and if not present defaults to the
 static value "RJMSTSQ"
-- The message body is then written to the TSQ using the JCICS `TSQ class and the `writeString()` method.
+- The message body is then written to the TSQ using the JCICS `TSQ` class and the `writeString()` method.
 
 ### Transactions
 An MDB is a type of EJB and so can use either container or bean managed
@@ -503,10 +503,10 @@ Liberty JVM server, including the following topics:
 The following references provide more detailed information if you want
 to explore the subject further.
 
-- Oracle technetwork -- [What New in JMS 2.0](http://www.oracle.com/technetwork/articles/java/jms20-1947669.html)\
-- CICS article -- [Using MQ JMS in an OSGi JVM server]https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)\
+- Oracle technetwork -- [What New in JMS 2.0](http://www.oracle.com/technetwork/articles/java/jms20-1947669.html)
+- CICS article -- [Using MQ JMS in an OSGi JVM server](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)
 - IBM MQ Knowledge Center -- [IBM MQ Classes for JMS -- Javadoc](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.javadoc.doc/WMQJMSClasses/com/ibm/msg/client/jms/JmsContext.html)
-- IBM MQ Knowledge Center -- [Using IBM MQ classes for JMS](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q031500_.htm)\
+- IBM MQ Knowledge Center -- [Using IBM MQ classes for JMS](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q031500_.htm)
 - IBM MQ Knowledge Center -- [Deploying message-driven beans within Liberty](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdb.html)
 - IBM CICS TS Knowledge Center -- [Using IBM MQ classes for JMS in a Liberty JVM server](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.4.0/applications/developing/java/dfhpj_webspheremq_jmsliberty.html)
 
