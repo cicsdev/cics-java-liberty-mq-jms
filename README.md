@@ -267,7 +267,7 @@ the messages to.
 ## References
 
 For further details on using the JMS APIs in CICS Liberty refer to this 
-[tutorial](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/master/blog.md)
+[tutorial](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/main/blog.md)
 
 For further information on JMS and IBM MQ refer to the following:
 

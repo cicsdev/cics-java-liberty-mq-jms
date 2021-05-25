@@ -58,7 +58,7 @@ as follows:
 3.  OSGi JVM server -- This supports non-managed JMS connection
     factories with integrated CICS transactions and security and is
     discussed further in the article [Using MQ JMS in a CICS OSGi JVM
-    server.](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)
+    server.](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/main/blog.md)
 
 
 The following table summarizes the current JMS API support for IBM MQ
@@ -82,7 +82,7 @@ CICSDev Git repository.
 ## MDB sample application
 
 Our sample MDB application provides a message driven bean called
-[MySimpleMDB](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/master/projects/com.ibm.cicsdev.mqjms.mdb/ejbModule/com/ibm/cicsdev/mqjms/mdb/MySimpleMDB.java)
+[MySimpleMDB](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/main/projects/com.ibm.cicsdev.mqjms.mdb/ejbModule/com/ibm/cicsdev/mqjms/mdb/MySimpleMDB.java)
 that receives messages from an MQ queue and writes the message body to a
 CICS temporary storage queue (TSQ).
 
@@ -191,7 +191,7 @@ the TSQ is defined as recoverable to CICS.
 
 For further details on the Java Transaction API (JTA) support in CICS
 see [Using Java Transactions in CICS Liberty to coordinate JDBC
-updates](https://github.com/cicsdev/blog-cics-java-jta-jdbc/blob/master/blog.md).
+updates](https://github.com/cicsdev/blog-cics-java-jta-jdbc/blob/main/blog.md).
 
 ```java
     @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
@@ -301,7 +301,7 @@ can read the CICS TSQ.
 ![](blog-graphics/Slide3-768x432.png)
 
 The JMS connection factory sample provides a servlet called
-[MQJMSDemo](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/master/projects/com.ibm.cicsdev.mqjms.cf.web/src/com/ibm/cicsdev/mqjms/cf/web/MQJMSDemo.java)
+[MQJMSDemo](https://github.com/cicsdev/cics-java-liberty-mq-jms/blob/main/projects/com.ibm.cicsdev.mqjms.cf.web/src/com/ibm/cicsdev/mqjms/cf/web/MQJMSDemo.java)
 that uses a JMS connection factory to send and receive message to and
 from an MQ queue called DEMO.SIMPLEQ. The servlet can also write
 messages to the MDB queue DEMO.MDBQUEUE and read the CICS TSQ used in
@@ -504,7 +504,7 @@ The following references provide more detailed information if you want
 to explore the subject further.
 
 - Oracle technetwork -- [What New in JMS 2.0](http://www.oracle.com/technetwork/articles/java/jms20-1947669.html)
-- CICS article -- [Using MQ JMS in an OSGi JVM server](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/master/blog.md)
+- CICS article -- [Using MQ JMS in an OSGi JVM server](https://github.com/cicsdev/blog-cics-java-mq-jms-osgi/blob/main/blog.md)
 - IBM MQ Knowledge Center -- [IBM MQ Classes for JMS -- Javadoc](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.javadoc.doc/WMQJMSClasses/com/ibm/msg/client/jms/JmsContext.html)
 - IBM MQ Knowledge Center -- [Using IBM MQ classes for JMS](https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_9.0.0/com.ibm.mq.dev.doc/q031500_.htm)
 - IBM MQ Knowledge Center -- [Deploying message-driven beans within Liberty](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.wlp.zseries.doc/ae/twlp_dep_msg_mdb.html)
