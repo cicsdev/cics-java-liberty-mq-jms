@@ -4,7 +4,7 @@ This project contains two samples. One sample is Java EE web application demonst
 how to use a message-driven bean (MDB). The second sample is a JMS 
 ConnectionFactory sample that connects to a remote IBM MQ queue manager using an MQ 
 client mode connection. This sample can also be used to write a JMS message
-for the MDB sample to process. For further details on how to develop these samples refer to the accompanying IBM developer tutorial [Developing an MQ JMS application for CICS Liberty](https://developer.ibm.com/tutorials/develop-jms-applications-for-ibm-cics-liberty)
+for the MDB sample to process. For further details on how to develop these samples refer to the accompanying IBM developer tutorial [Develop a JMS application for CICS Liberty](https://developer.ibm.com/tutorials/develop-jms-applications-for-ibm-cics-liberty)
 
 ## Repository structure
 
