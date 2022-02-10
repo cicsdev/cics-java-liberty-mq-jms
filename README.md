@@ -47,8 +47,9 @@ for the MDB sample to process. For further details on how to develop these sampl
   [PI67640](http://www.ibm.com/support/docview.wss?uid=swg1PI67640), or 
   CICS TS V5.4
 * IBM MQ V8.0 or later on z/OS
-* IBM CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature 
-  installed. Download from [IBM Mainframe DEV](https://developer.ibm.com/mainframe/products/downloads)
+* Java SE 1.8 on the z/OS system
+* Java SE 1.8 on the workstation
+* Eclipse with the IBM CICS SDK for Java EE, Jakarta EE and Liberty, downloaded from [here](https://ibm.github.io/mainframe-downloads/downloads.html) or any IDE that supports usage of the Maven Central artifact [com.ibm.cics:com.ibm.cics.server.](https://search.maven.org/artifact/com.ibm.cics/com.ibm.cics.server)
 
 
 ## Configuring IBM MQ
