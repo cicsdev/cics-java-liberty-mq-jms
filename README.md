@@ -1,6 +1,6 @@
 cics-java-liberty-mq-jms
 ================
-This project contains two samples. One sample is Java EE web application demonstrating 
+This project contains two samples. One sample is a Java EE web application demonstrating 
 how to use a message-driven bean (MDB). The second sample is a JMS 
 ConnectionFactory sample that connects to a remote IBM MQ queue manager using an MQ 
 client mode connection. This sample can also be used to write a JMS message
