@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/application_7.xsd" version="7">
+	<display-name>com.ibm.cicsdev.mqjms.ear</display-name>
+	<module id="Module_1734536444294">
+		<ejb>cics-java-liberty-mqjms-mdb.jar</ejb>
+	</module>
+	<module id="Module_1734536491938">
+		<web>
+			<web-uri>cics-java-liberty-mqjms-web.war</web-uri>
+			<context-root>com.ibm.cicsdev.mqjms.web</context-root>
+		</web>
+	</module>
+</application>

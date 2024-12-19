@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">        
+    <wb-module deploy-name="com.ibm.cicsdev.mqjms.ear">
+        <wb-resource deploy-path="/src/main/application" source-path="/src/main/application"/>        
+        <dependent-module archiveName="cics-java-liberty-mqjms-web.war" deploy-path="/" handle="module:/resource/com.ibm.cicsdev.mqjms.web/com.ibm.cicsdev.mqjms.web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="cics-java-liberty-mqjms-mdb.jar" deploy-path="/" handle="module:/resource/com.ibm.cicsdev.mqjms.mdb/com.ibm.cicsdev.mqjms.mdb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>            
+    </wb-module>    
+</project-modules>

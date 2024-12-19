@@ -1,0 +1,31 @@
+/*
+ * WAR project build file 
+ */
+
+plugins
+{
+    id 'java'
+    id 'war'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+// In this section you declare the dependencies for your code
+dependencies {
+    // CICS TS V5.5 Maven BOM (as of 19th May 2020)
+    compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:5.5-20200519131930-PH25409")
+
+    // Don't include JCICS in the final build (no need for version because we have BOM)
+    compileOnly("com.ibm.cics:com.ibm.cics.server")     
+
+    // Compile against, but don't include Java EE components in the final build 
+    compileOnly ("javax.servlet:javax.servlet-api:3.1.0")   
+    compileOnly ("javax.jms:javax.jms-api:2.0.1") 
+ 
+}
+
+

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle" bundleVersion="1" bundleRelease="0" build="IntB-202108252027">
+    <meta_directives>
+        <timestamp>2025-11-04T11:21:48.094Z</timestamp>
+    </meta_directives>
+    <define name="cics-java-liberty-mqjms-ear" type="http://www.ibm.com/xmlns/prod/cics/bundle/EARBUNDLE" path="cics-java-liberty-mqjms-ear.earbundle"/>
+</manifest>
