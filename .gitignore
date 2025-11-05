@@ -63,4 +63,6 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-bin
+#Eclipse ignores
+**/bin/
+**/generated/
