@@ -9,10 +9,9 @@ plugins
 }
 
 group = 'com.ibm.cicsdev.mqjms'
-archivesBaseName='com.ibm.cicsdev.mqjms'
-version = '1.0.0'
 
-
+// This sets the name of the EJB JAR module referenced in the application.xml
+archivesBaseName='cics-java-liberty-mqjms-mdb'
 
 // If in Eclipse, add Javadoc to the local project classpath
 eclipse 

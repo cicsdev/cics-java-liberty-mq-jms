@@ -1,7 +1,7 @@
 cics-java-liberty-mq-jms
 ================
 This project contains two samples which can be using in a CICS Liberty JVM server to test 
-demonstrate JMS integration with IMQ MQ.
+demonstrate JMS integration with IBM MQ.
 The first sample is an EJB application demonstrating how to use a message-driven bean (MDB).
 The second sample is a Java EE web application that uses JMS to connect to a remote IBM MQ queue manager using an MQ 
 client mode connection. This sample can also be used to write a JMS message to drive
@@ -58,7 +58,7 @@ Ensure the following Eclipse projects are imported:
 1. Add the *CICS with Java EE 6 & 7 Liberty Library* to the build path of your web and EJB projects. 
 1. Ensure the projects are targeted to compile at a level that is compatible with the Java level being used on CICS. This can be achieved by editing the Java Project Facet in the project properties.
 1. Update the name of the CICS JVM server DFHWLP specified in the CICS bundle project to match the value used in the target CICS system. This is specified in the `com.ibm.cicsdev.mqjms.ear.earbundle` XML file.
-1. Export the CICS bundle project to zFS using the "Export Bundle Projec to z/OS UNIX File System" menu.
+1. Export the CICS bundle project to zFS using the "Export Bundle Project to z/OS UNIX File System" menu.
 
 ## Building 
 You can build the sample using an IDE of your choice, or you can build it from the command line. For both approaches, using Gradle or Maven is the recommended way to get a consistent version of build tooling. 
