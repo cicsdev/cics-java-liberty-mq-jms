@@ -1,0 +1,16 @@
+// EAR project Gradle build file 
+
+plugins
+{
+id 'java'
+id 'ear'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    deploy project(path: ':cics-java-liberty-mqjms-mdb', configuration: 'archives')
+    deploy project(path: ':cics-java-liberty-mqjms-web', configuration: 'archives')
+}

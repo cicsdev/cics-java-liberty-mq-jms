@@ -17,7 +17,7 @@
     </jmsQueueConnectionFactory>
     <connectionManager id="ConMgrJms" maxPoolSize="20"/> 
     	
-	<jmsActivationSpec id="com.ibm.cicsdev.mqjms.mdb.ear/com.ibm.cicsdev.mqjms.mdb/MySimpleMDB">
+	<jmsActivationSpec id="cics-java-liberty-mqjms-ear-1.0.0/cics-java-liberty-mqjms-mdb/MySimpleMDB">
 		<properties.wmqJms destinationRef="jms/mdbq" destinationType="javax.jms.Queue"
 		    channel="WAS.JMS.SVRCONN"
 		    hostName="localhost"

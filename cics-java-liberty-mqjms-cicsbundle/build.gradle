@@ -1,0 +1,22 @@
+/*
+ * CICS bundle project build file 
+ */
+
+plugins {
+    id 'com.ibm.cics.bundle' version "1.0.7"
+}
+
+dependencies {
+    cicsBundlePart project(path: ':cics-java-liberty-mqjms-ear', configuration: 'archives')
+}
+
+cicsBundle {
+    build {
+        defaultJVMServer = project.findProperty("cics.jvmserver") ?: "DFHWLP"
+    }
+}
+
+description = 'CICS Enterprise Java Program - CICS Bundle'
+version = "1.0.0"
+
+

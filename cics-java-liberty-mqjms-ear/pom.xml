@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.ibm.cicsdev.mqjms</groupId>
+    <artifactId>cics-java-liberty-mqjms</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>cics-java-liberty-mqjms-ear</artifactId>
+  <packaging>ear</packaging>
+
+  <name>CICS JMS EAR Application - EAR</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <configuration>
+          <modules>
+            <webModule>
+              <groupId>com.ibm.cicsdev.mqjms</groupId>
+              <artifactId>cics-java-liberty-mqjms-web</artifactId>
+            </webModule>
+            <ejbModule>
+              <groupId>com.ibm.cicsdev.mqjms</groupId>
+              <artifactId>cics-java-liberty-mqjms-mdb</artifactId>
+            </ejbModule>
+          </modules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.cicsdev.mqjms</groupId>
+      <artifactId>cics-java-liberty-mqjms-web</artifactId>
+      <type>war</type>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.ibm.cicsdev.mqjms</groupId>
+      <artifactId>cics-java-liberty-mqjms-mdb</artifactId>
+      <type>ejb</type>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+
+</project>

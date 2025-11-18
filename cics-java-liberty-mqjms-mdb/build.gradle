@@ -1,0 +1,43 @@
+/*
+ * EJB project build file 
+ */
+
+plugins
+{
+    id 'java'
+    id 'eclipse'
+}
+
+group = 'com.ibm.cicsdev.mqjms'
+
+// This sets the name of the EJB JAR module referenced in the application.xml
+archivesBaseName='cics-java-liberty-mqjms-mdb'
+
+// If in Eclipse, add Javadoc to the local project classpath
+eclipse 
+{
+    classpath 
+    {
+        downloadJavadoc = true
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+// In this section you declare the dependencies for your code
+dependencies {
+    // CICS TS V5.5 Maven BOM (as of 19th May 2020)
+    compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:5.5-20200519131930-PH25409")
+
+    // Don't include JCICS in the final build (no need for version because we have BOM)
+    compileOnly("com.ibm.cics:com.ibm.cics.server")     
+
+    // Compile against, but don't include Java EE components in the final build 
+    compileOnly ("javax.jms:javax.jms-api:2.0.1") 
+    compileOnly ("javax.ejb:javax.ejb-api:3.2.2") 
+}
+

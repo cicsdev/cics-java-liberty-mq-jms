@@ -1,0 +1,5 @@
+rootProject.name = 'cics-java-liberty-mqjms'
+include 'cics-java-liberty-mqjms-mdb'
+include 'cics-java-liberty-mqjms-web'
+include 'cics-java-liberty-mqjms-ear'
+include 'cics-java-liberty-mqjms-cicsbundle'
