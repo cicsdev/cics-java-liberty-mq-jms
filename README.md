@@ -1,7 +1,10 @@
 cics-java-liberty-mq-jms
 ================
-This project contains two samples which can be using in a CICS Liberty JVM server to test 
-demonstrate JMS integration with IBM MQ.
+
+[![Build](https://github.com/cicsdev/cics-java-liberty-mq-jms/actions/workflows/main.yml/badge.svg)](https://github.com/cicsdev/cics-java-liberty-mq-jms/actions/workflows/main.yml)
+
+
+This project contains two samples which can be used  in a CICS Liberty JVM server to test demonstrate JMS integration with IBM MQ.
 The first sample is an EJB application demonstrating how to use a message-driven bean (MDB).
 The second sample is a Java EE web application that uses JMS to connect to a remote IBM MQ queue manager using an MQ 
 client mode connection. This sample can also be used to write a JMS message to drive
