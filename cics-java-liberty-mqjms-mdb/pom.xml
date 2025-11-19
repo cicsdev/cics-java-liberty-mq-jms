@@ -16,7 +16,6 @@
 
   <name>CICS JMS EAR Application - MDB</name>
 
-
   <dependencies>
     <dependency>
       <groupId>javax.jms</groupId>

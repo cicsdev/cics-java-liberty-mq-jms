@@ -67,13 +67,13 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-ear-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.3.0</version>
                     <configuration>
                         <archive>
                             <addMavenDescriptor>false</addMavenDescriptor>
                         </archive>
-                        <fileNameMapping>no-version</fileNameMapping>
-                        <version>7</version>
+                           <outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping>                        
+                           <version>7</version>
                         <defaultLibBundleDir>lib</defaultLibBundleDir>
                     </configuration>
                 </plugin>
