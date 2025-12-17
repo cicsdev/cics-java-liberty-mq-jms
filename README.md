@@ -268,3 +268,8 @@ For further information on JMS and IBM MQ refer to the following:
 
 ## License
 This project is licensed under [Apache License Version 2.0](LICENSE).
+
+## Usage terms
+By downloading, installing, and/or using this sample, you acknowledge that separate license terms may apply to any dependencies that might be required as part of the installation and/or execution and/or automated build of the sample, including the following IBM license terms for relevant IBM components:
+
+• IBM CICS development components terms: https://www.ibm.com/support/customer/csol/terms/?id=L-ACRR-BBZLGX
