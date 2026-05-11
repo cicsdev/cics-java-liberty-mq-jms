@@ -1,7 +1,9 @@
 # Maintainers
 
+- Ivan D. Hargreaves [@IvanHargreaves](https://github.com/IvanHargreaves)
+
+## Former maintainers
+
 - Phil Wakelin [@PhilWakelin](https://github.com/PhilWakelin)
-- Ivan D. Hargreaves @IvanHargreaves
 
-
-*Last reviewed:* October 2025
+*Last reviewed:* May 2026
